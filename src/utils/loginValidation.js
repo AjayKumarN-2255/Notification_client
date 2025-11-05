@@ -1,0 +1,16 @@
+
+export const emailValidation = {
+    required: "Email is required",
+    pattern: {
+        value: /^\S+@\S+\.\S+$/,
+        message: "Invalid email address",
+    },
+};
+
+export const passwordValidation = {
+    required: "Password is required",
+    minLength: {
+        value: 6,
+        message: "Password must be at least 6 characters",
+    }
+};
