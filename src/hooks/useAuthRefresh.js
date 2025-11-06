@@ -16,6 +16,9 @@ function useAuthRefresh() {
             try {
                 const response = await refreshToken();
                 dispatch(setToken(response?.accessToken));
+                if (response) {
+                    dispatch(setSessionChecked(true));
+                }
             } catch (error) {
                 console.log("refreshToken error", error);
                 if (error?.response?.status === 401) {
@@ -23,8 +26,6 @@ function useAuthRefresh() {
                 } else {
                     dispatch(setError(error?.message))
                 }
-            } finally {
-                dispatch(setSessionChecked(true));
             }
         }
 

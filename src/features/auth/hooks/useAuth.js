@@ -6,7 +6,6 @@ import { Login } from "../../../services/authService"
 function useAuth() {
 
     const dispatch = useDispatch();
-
     const { error } = useSelector(state => state.auth);
 
     useEffect(() => {

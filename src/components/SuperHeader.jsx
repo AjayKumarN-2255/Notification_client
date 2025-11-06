@@ -1,7 +1,9 @@
 import { useSelector } from "react-redux";
+import useLogout from '../hooks/useLogout';
 
 function SuperHeader() {
 
+    const { handleLogout } = useLogout();
     const { user, isAuthenticated } = useSelector(state => state.auth);
 
     return (
@@ -25,6 +27,7 @@ function SuperHeader() {
                     </div>
                     <button
                         className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition-colors duration-200"
+                        onClick={handleLogout}
                     >
                         Logout
                     </button>

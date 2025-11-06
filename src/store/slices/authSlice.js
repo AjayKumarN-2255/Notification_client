@@ -20,6 +20,7 @@ const authSlice = createSlice({
             state.user = user;
             state.accessToken = accessToken;
             state.isAuthenticated = !!accessToken;
+            state.sessionChecked = !!accessToken;
             state.loading = false;
             state.error = null;
             localStorage.setItem("user", JSON.stringify(user));
