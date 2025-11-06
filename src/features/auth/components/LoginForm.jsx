@@ -2,12 +2,27 @@ import { useForm } from "react-hook-form";
 import { emailValidation, passwordValidation } from '../../../utils/loginValidation';
 import useAuth from "../hooks/useAuth";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
 
     const { register, handleSubmit, formState: { errors } } = useForm();
     const { handleLogin } = useAuth();
-    const { error } = useSelector(state => state.auth);
+    const { error, user, loading, isAuthenticated } = useSelector(state => state.auth);
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (isAuthenticated) {
+            switch (user?.role) {
+                case 'admin': navigate('/admin/dashboard');
+                    return;
+                case 'super-admin': navigate('/superadmin/dashboard');
+                    return;
+                default: navigate('/admin/dashboard');
+                    return;
+            }
+        }
+    }, [isAuthenticated, user, navigate]);
 
     return (
         <div className='border-2 border-gray-100 rounded-lg w-full max-w-xl p-6'>
@@ -40,7 +55,7 @@ function LoginForm() {
                         className="bg-blue-600 max-w-lg w-full text-white font-medium px-4 py-2 rounded-md hover:bg-blue-700
                         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition-colors"
                     >
-                        Login
+                        {loading ? 'Loading...' : 'Login'}
                     </button>
                 </div>
                 {error && <p className="text-red-500 space-y-2">{error}</p>}

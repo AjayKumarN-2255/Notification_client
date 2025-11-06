@@ -1,12 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { setCredentials, setLoading, setError } from "../../../store/slices/authSlice"
 import { Login } from "../../../services/authService"
 
 function useAuth() {
 
-    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const { error } = useSelector(state => state.auth);
@@ -32,14 +30,6 @@ function useAuth() {
             if (res.success) {
                 const { accessToken, user } = res;
                 dispatch(setCredentials({ accessToken, user }));
-                switch (user?.role) {
-                    case 'admin': navigate('/admin/dashboard');
-                        return;
-                    case 'super-admin': navigate('/superadmin/dashboard');
-                        return;
-                    default: navigate('/admin/dashboard');
-                        return;
-                }
             }
         } catch (error) {
             dispatch(setError(error.response?.data?.message || error.message));

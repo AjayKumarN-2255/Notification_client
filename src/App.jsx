@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
-
+import useAuthRefresh from "./hooks/useAuthRefresh";
 
 import LoginPage from './features/auth/pages/LoginPage';
 
@@ -16,6 +16,8 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 
 
 function App() {
+
+  useAuthRefresh();
 
   const router = createBrowserRouter([
     { path: '/', element: <LoginPage /> },
@@ -34,7 +36,7 @@ function App() {
     },
     {
       path: '/superadmin',
-      element: <ProtectedRoute allowedRoles={['super-admin']} />, // checks auth
+      element: <ProtectedRoute allowedRoles={["super-admin"]} />, // checks auth
       children: [
         {
           element: <SuperAdminLayout />, // layout wraps all superadmin pages

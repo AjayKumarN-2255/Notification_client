@@ -8,7 +8,8 @@ const initialState = {
     loading: false,
     error: null,
     accessToken: null,
-    isAuthenticated: false
+    isAuthenticated: false,
+    sessionChecked: false
 }
 const authSlice = createSlice({
     name: 'auth',
@@ -31,7 +32,7 @@ const authSlice = createSlice({
             state.user = null;
             state.accessToken = null;
             state.isAuthenticated = false;
-            state.loading = false;
+            state.sessionChecked = false;
             state.error = null;
             localStorage.removeItem("user");
         },
@@ -41,9 +42,12 @@ const authSlice = createSlice({
         setError: (state, action) => {
             state.error = action.payload;
             state.loading = false;
+        },
+        setSessionChecked: (state, action) => {
+            state.sessionChecked = action.payload;
         }
     }
 })
 
-export const { setCredentials, setToken, logout, setLoading, setError } = authSlice.actions;
+export const { setCredentials, setToken, logout, setLoading, setError, setSessionChecked } = authSlice.actions;
 export default authSlice.reducer;
