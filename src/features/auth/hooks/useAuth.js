@@ -33,11 +33,11 @@ function useAuth() {
                 const { accessToken, user } = res;
                 dispatch(setCredentials({ accessToken, user }));
                 switch (user?.role) {
-                    case 'admin': navigate('/admin');
+                    case 'admin': navigate('/admin/dashboard');
                         return;
-                    case 'super-admin': navigate('/admin');
+                    case 'super-admin': navigate('/superadmin/dashboard');
                         return;
-                    default: navigate('/admin');
+                    default: navigate('/admin/dashboard');
                         return;
                 }
             }

@@ -5,7 +5,7 @@ const savedUser = localStorage.getItem("user")
     : null;
 const initialState = {
     user: savedUser,
-    loading: true,
+    loading: false,
     error: null,
     accessToken: null,
     isAuthenticated: false
