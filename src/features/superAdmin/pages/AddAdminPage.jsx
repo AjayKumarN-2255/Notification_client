@@ -1,8 +1,10 @@
-import React from 'react'
+import AdminForm from '../components/AdminForm'
 
 function AddAdminPage() {
   return (
-    <div>AddAdminPage</div>
+    <div className='w-full h-full items-center flex justify-center'>
+      <AdminForm />
+    </div>
   )
 }
 

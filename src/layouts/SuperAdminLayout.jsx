@@ -10,7 +10,7 @@ function SuperAdminLayout() {
                 <div className='md:w-60 lg:w-72 h-fit md:h-full'>
                     <SuperSidebar />
                 </div>
-                <div className='flex-1 bg-gray-100 md:h-full p-10'>
+                <div className='flex-1 bg-gray-100 md:h-full p-4 md:p-10'>
                     <Outlet />
                 </div>
             </div>
