@@ -12,31 +12,44 @@ import SuperDashboard from "./features/superAdmin/pages/SuperDashboard";
 import AddAdminPage from "./features/superAdmin/pages/AddAdminPage";
 import AddNotificationPage from "./features/admin/pages/AddNotificationPage";
 
+import ProtectedRoute from "./routes/ProtectedRoute";
+
+
 function App() {
 
   const router = createBrowserRouter([
     { path: '/', element: <LoginPage /> },
     {
-      path: '/admin', element: <AdminLayout />,
+      path: '/admin',
+      element: <ProtectedRoute allowedRoles={['admin']} />, // checks auth
       children: [
-        { path: 'dashboard', element: <AdminDashboard /> },
-        { path: 'add-notification', element: <AddNotificationPage /> },
+        {
+          element: <AdminLayout />,   // layout wraps all admin pages
+          children: [
+            { path: 'dashboard', element: <AdminDashboard /> },
+            { path: 'add-notification', element: <AddNotificationPage /> },
+          ]
+        }
       ]
     },
     {
-      path: '/superadmin', element: <SuperAdminLayout />,
+      path: '/superadmin',
+      element: <ProtectedRoute allowedRoles={['super-admin']} />, // checks auth
       children: [
-        { path: 'dashboard', element: <SuperDashboard /> },
-        { path: 'add-admin', element: <AddAdminPage /> },
+        {
+          element: <SuperAdminLayout />, // layout wraps all superadmin pages
+          children: [
+            { path: 'dashboard', element: <SuperDashboard /> },
+            { path: 'add-admin', element: <AddAdminPage /> },
+          ]
+        }
       ]
-    },
+    }
+
   ]);
 
-  return (
-    <>
-      <RouterProvider router={router} />
-    </>
-  )
+  return <RouterProvider router={router} />;
+
 }
 
 export default App
