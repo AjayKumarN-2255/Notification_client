@@ -1,10 +1,9 @@
-import React from 'react'
+import AdminLists from "../components/AdminLists";
 
 function SuperDashboard() {
-    console.log("reached super admin dashboard")
     return (
         <div>
-            SuperDashboard
+            <AdminLists />
         </div>
     )
 }
