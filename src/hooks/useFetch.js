@@ -3,7 +3,7 @@ import api from "../services/api";
 
 export default function useFetch(url, options = {}) {
     const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -16,7 +16,7 @@ export default function useFetch(url, options = {}) {
             } catch (err) {
                 if (isMounted) setError(err?.response?.data?.message || err.message || "Something went wrong");
             } finally {
-                // if (isMounted) setLoading(false);
+                if (isMounted) setLoading(false);
             }
         }
 

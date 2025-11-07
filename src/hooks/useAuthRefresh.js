@@ -22,7 +22,7 @@ function useAuthRefresh() {
             } catch (error) {
                 console.log("refreshToken error", error);
                 if (error?.response?.status === 401) {
-                    dispatch(logout())
+                    dispatch(logout());
                 } else {
                     dispatch(setError(error?.message))
                 }

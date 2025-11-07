@@ -2,7 +2,7 @@ import AdminLists from "../components/AdminLists";
 
 function SuperDashboard() {
     return (
-        <div>
+        <div className="w-full h-full">
             <AdminLists />
         </div>
     )

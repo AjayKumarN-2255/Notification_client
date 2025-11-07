@@ -1,17 +1,17 @@
 import { useForm } from "react-hook-form";
 import { emailValidation, passwordValidation, usernameValidation, phoneValidation } from '../../../utils/adminFormValidation';
+import useAddAdmin from "../hooks/useAddAdmin";
 
 function AdminForm() {
 
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const formsubmit = (data) => {
-    console.log(data)
-  }
+  const { handleAddAdmin, error, loading } = useAddAdmin();
+
 
   return (
     <div className='border-2 border-gray-100  rounded-lg w-full max-w-xl p-6 bg-white'>
       <form className='flex flex-col gap-10'
-        onSubmit={handleSubmit(formsubmit)}>
+        onSubmit={handleSubmit(handleAddAdmin)}>
         <h1 className='text-center text-xl font-semibold'>Add Admin</h1>
         <div className="flex gap-3 md:items-center w-full max-w-lg flex-col md:flex-row">
           <label className="text-gray-700 font-medium max-w-28 w-full">Username:</label>
@@ -59,10 +59,10 @@ function AdminForm() {
             className="bg-blue-600 max-w-lg w-full text-white font-medium px-4 py-2 rounded-md hover:bg-blue-700
                         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition-colors"
           >
-            Add admin
+            {loading ? 'Loading' : 'Add admin'}
           </button>
         </div>
-        {/* {error && <p className="text-red-500 space-y-2">{error}</p>} */}
+        {error && <p className="text-red-500 space-y-2">{error}</p>}
       </form>
     </div>
   )
