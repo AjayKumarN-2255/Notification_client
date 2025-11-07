@@ -39,6 +39,7 @@ api.interceptors.response.use(
         store.dispatch(setToken(newToken));
 
         originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        console.log("redirected with changes")
         return api(originalRequest);
       } catch (err) {
         return Promise.reject(err);

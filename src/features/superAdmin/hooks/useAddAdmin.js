@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { addAdmin } from "../../../services/adminService";
 import { useNavigate } from "react-router-dom";
 
@@ -7,6 +7,13 @@ function useAddAdmin() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const [shouldNavigate, setShouldNavigate] = useState(false);
+
+    useEffect(() => {
+        if (shouldNavigate) {
+            navigate('/superadmin/dashboard');
+        }
+    }, [shouldNavigate, navigate]);
 
     async function handleAddAdmin(payLoad) {
         try {
@@ -14,7 +21,7 @@ function useAddAdmin() {
             setLoading(true);
             const res = await addAdmin(payLoad);
             if (res.success) {
-                navigate('/superadmin/dashboard');
+                setShouldNavigate(true);
             }
         } catch (err) {
             const message = err?.response?.data?.message || "Failed to add admin";
