@@ -5,7 +5,6 @@ function AdminLists() {
 
   const { data: admins, loading, error } = useFetch('/admin');
 
-
   if (loading) {
     return (
       <div className="w-full h-full flex items-center justify-center">
