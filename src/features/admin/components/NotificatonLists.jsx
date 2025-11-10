@@ -1,9 +1,11 @@
-import useFetch from '../../../hooks/useFetch';
-import Loader from '../../../components/Loader'
+import useNotification from '../hooks/useNotification';
+import Loader from '../../../components/Loader';
 
 function NotificatonLists() {
 
-  const { data: notifications, loading, error } = useFetch('/notification');
+  const { data: notifications, loading, error,
+    handleSnooze, handleStop
+  } = useNotification();
 
   if (loading) {
     <div className="w-full h-full">
@@ -12,7 +14,9 @@ function NotificatonLists() {
     return
   }
 
-  return (
+  return error ? (
+    <div className="text-red-500 text-center mt-4">{error}</div>
+  ) : (
     <div className="p-4 w-full h-full">
       <h2 className="text-xl font-semibold mb-4">Notifications</h2>
 
@@ -42,13 +46,15 @@ function NotificatonLists() {
             <div className="flex gap-4 mt-4">
               <button
                 className={`flex-1 py-2 text-sm text-white rounded-lg
-                ${item.is_snoozed  ? "bg-gray-600 hover:bg-gray-700"   : "bg-blue-600 hover:bg-blue-700"  }`} >
+                ${item.is_snoozed ? "bg-gray-600 hover:bg-gray-700" : "bg-blue-600 hover:bg-blue-700"}`}
+                onClick={() => { handleSnooze(item._id) }}>
                 {item.is_snoozed ? "Unsnooze" : "Snooze"}
               </button>
 
 
               <button className={`flex-1 py-2 text-sm text-white rounded-lg 
-              ${item.is_active ? 'bg-yellow-600 hover:bg-yellow-700' : 'bg-green-600 hover:bg-green-700'}`}>
+              ${item.is_active ? 'bg-yellow-600 hover:bg-yellow-700' : 'bg-green-600 hover:bg-green-700'}`}
+                onClick={() => { handleStop(item._id) }}>
                 {item.is_active ? "Stop" : "Resume"}
               </button>
 
