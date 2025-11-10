@@ -1,11 +1,13 @@
 import useNotification from '../hooks/useNotification';
 import Loader from '../../../components/Loader';
+import Modal from '../../../components/Modal';
 
 function NotificatonLists() {
 
-  const { data: notifications, loading, error,
-    handleSnooze, handleStop
+  const { data: notifications, loading, error, setDeleteModal,
+    handleSnooze, handleStop, deleteModal, handleModal, handleDelete
   } = useNotification();
+
 
   if (loading) {
     <div className="w-full h-full">
@@ -20,7 +22,7 @@ function NotificatonLists() {
     <div className="p-4 w-full h-full">
       <h2 className="text-xl font-semibold mb-4">Notifications</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
         {notifications?.map((item) => (
           <div
             key={item._id}
@@ -42,7 +44,6 @@ function NotificatonLists() {
               <span>Next: {item.next_notification_date}</span>
             </div>
 
-            {/* Action buttons (future functionality) */}
             <div className="flex gap-4 mt-4">
               <button
                 className={`flex-1 py-2 text-sm text-white rounded-lg
@@ -58,7 +59,8 @@ function NotificatonLists() {
                 {item.is_active ? "Stop" : "Resume"}
               </button>
 
-              <button className="flex-1 py-2 text-sm bg-red-600 hover:bg-red-700 text-white rounded-lg">
+              <button className="flex-1 py-2 text-sm bg-red-600 hover:bg-red-700 text-white rounded-lg"
+                onClick={() => { handleModal(item._id, item.title) }}>
                 Delete
               </button>
             </div>
@@ -66,6 +68,17 @@ function NotificatonLists() {
           </div>
         ))}
       </div>
+      {deleteModal.show && (
+        <Modal
+          show={deleteModal.show}
+          title={deleteModal.title}
+          onCancel={() => setDeleteModal({ show: false, nId: null, title: "" })}
+          onDelete={() => {
+            handleDelete(deleteModal.nId);
+            setDeleteModal({ show: false, nId: null, title: "" });
+          }}
+        />
+      )}
     </div>
   )
 }

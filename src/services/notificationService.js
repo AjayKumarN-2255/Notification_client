@@ -15,3 +15,8 @@ export const toggleStop = async (nId) => {
     const response = await api.patch(`/notification/stop/${nId}`);
     return response.data;
 }
+
+export const deleteNotification = async (nId) => {
+    const response = await api.delete(`/notification/${nId}`);
+    return response.data;
+}

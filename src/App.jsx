@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import useAuthRefresh from "./hooks/useAuthRefresh";
+import { Toaster } from "react-hot-toast";
 
 import LoginPage from './features/auth/pages/LoginPage';
 
@@ -50,7 +51,19 @@ function App() {
 
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <Toaster
+        position="top-right"       
+        reverseOrder={false}       
+        toastOptions={{
+          duration: 3000,          
+          style: { fontSize: '14px' },
+        }}
+      />
+    </>
+  );
 
 }
 
