@@ -27,7 +27,6 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    console.log("original request", originalRequest);
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
@@ -39,7 +38,6 @@ api.interceptors.response.use(
         store.dispatch(setToken(newToken));
 
         originalRequest.headers.Authorization = `Bearer ${newToken}`;
-        console.log("redirected with changes")
         return api(originalRequest);
       } catch (err) {
         return Promise.reject(err);

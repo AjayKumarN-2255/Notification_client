@@ -1,10 +1,11 @@
 import React from 'react'
+import NotificatonLists from '../components/NotificatonLists'
 
 function AdminDashboard() {
-  console.log("")
+
   return (
-    <div>
-      AdminDashboard
+    <div className='w-full h-full'>
+      <NotificatonLists />
     </div>
   )
 }
