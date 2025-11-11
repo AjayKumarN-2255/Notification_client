@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { setCredentials, setLoading, setError } from "../../../store/slices/authSlice"
 import { Login } from "../../../services/authService"
+import toast from "react-hot-toast";
 
 function useAuth() {
 
@@ -32,6 +33,7 @@ function useAuth() {
             }
         } catch (error) {
             dispatch(setError(error.response?.data?.message || error.message));
+            toast.error(error.response?.data?.message || error.message);
             setTimeout(() => {
                 dispatch(setError(null));
             }, 2000);

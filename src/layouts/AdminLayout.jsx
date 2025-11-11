@@ -10,7 +10,7 @@ function AdminLayout() {
                 <div className='md:w-60 lg:w-72 h-fit md:h-full'>
                     <AdminSidebar />
                 </div>
-                <div className='flex-1 bg-gray-100 md:h-full p-10'>
+                <div className='flex-1 bg-gray-100 md:h-full p-2 sm:p-4 md:p-8 lg:p-10  lg:overflow-y-scroll'>
                     <Outlet />
                 </div>
             </div>

@@ -1,9 +1,12 @@
-import React from 'react'
+import React from 'react';
+import NotificationForm from '../components/NotificationForm'
 
 function AddNotificationPage() {
   return (
-    <div>AddNotificationPage</div>
+    <div className='w-full h-full items-start flex justify-center'>
+        <NotificationForm/>
+    </div>
   )
 }
 
-export default AddNotificationPage
+export default AddNotificationPage;

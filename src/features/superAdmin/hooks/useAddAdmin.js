@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { addAdmin } from "../../../services/adminService";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function useAddAdmin() {
 
@@ -25,7 +26,7 @@ function useAddAdmin() {
             }
         } catch (err) {
             const message = err?.response?.data?.message || "Failed to add admin";
-            console.log("error from add admin", message);
+            toast.error(message);
             setError(message);
         } finally {
             setLoading(false);

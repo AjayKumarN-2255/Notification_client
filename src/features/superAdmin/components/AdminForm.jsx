@@ -8,8 +8,6 @@ function AdminForm() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const { handleAddAdmin, error, loading } = useAddAdmin();
 
-
-
   return (
     <div className='border-2 border-gray-100  rounded-lg w-full max-w-xl p-6 bg-white'>
       <form className='flex flex-col gap-10'

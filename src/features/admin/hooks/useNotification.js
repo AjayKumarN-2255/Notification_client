@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import { getAllNotification, toggleSnooze, toggleStop, deleteNotification } from "../../../services/notificationService";
 import toast from "react-hot-toast";
 
-export default function useNotification() {
-    const [data, setData] = useState(null);
+export default function useNotification(options) {
+    const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [deleteModal, setDeleteModal] = useState({ show: false, nId: null, title: "" });
+    
+    const autoFetch = options?.autoFetch ?? true;
 
     const fetchNotifications = async () => {
         try {
@@ -21,8 +23,10 @@ export default function useNotification() {
     };
 
     useEffect(() => {
-        fetchNotifications();
-    }, []);
+        if (autoFetch) {
+            fetchNotifications();
+        }
+    }, [autoFetch]);
 
     const handleSnooze = async (nId) => {
         try {
@@ -70,10 +74,18 @@ export default function useNotification() {
         }
     }
 
+    const handleAddNotification = (data) => {
+
+        data.category_names = data.category_names?.map(cat => cat.value);
+        data.notify_user_list = data.notify_user_list?.map(cat => cat.value);
+        data.notify_before = data.notify_before.number * data.notify_before.unit;
+        console.log(data);
+    }
+
 
     return {
         data, loading, error, deleteModal,
         handleSnooze, handleStop, handleModal,
-        setDeleteModal, handleDelete
+        setDeleteModal, handleDelete, handleAddNotification
     };
 }
