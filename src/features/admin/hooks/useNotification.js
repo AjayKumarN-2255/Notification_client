@@ -4,9 +4,10 @@ import {
     toggleStop, deleteNotification,
     addNotification
 } from "../../../services/notificationService";
-import { addCategory } from "../../../services/adminService"
+import { addCategory } from "../../../services/adminService";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { NOTIFY_BEFORE_OPTIONS, NOTIFICATION_GAPS } from "../../../utils/constants";
 
 export default function useNotification(options) {
     const [data, setData] = useState([]);
@@ -41,7 +42,7 @@ export default function useNotification(options) {
 
     useEffect(() => {
         if (shouldNavigate) {
-            navigate('/superadmin/dashboard');
+            navigate('/admin/dashboard');
         }
     }, [shouldNavigate, navigate]);
 
@@ -95,7 +96,14 @@ export default function useNotification(options) {
 
         payLoad.category_names = payLoad.category_names?.map(cat => cat.value);
         payLoad.notify_user_list = payLoad.notify_user_list?.map(cat => cat.value);
-        payLoad.notify_before = payLoad.notify_before.number * payLoad.notify_before.unit;
+        const selectedOption = NOTIFY_BEFORE_OPTIONS.find(
+            opt => opt.value === payLoad.notify_before.unit
+        );
+        payLoad.notify_before_unit = selectedOption?.label;
+        const selectedNotificGap = NOTIFICATION_GAPS.find(opt => opt.value === parseInt(payLoad.notification_frequency));
+        payLoad.notific_gap_unit = selectedNotificGap.label;
+        payLoad.notify_before = payLoad.notify_before.number * payLoad.notify_before.unit; 
+        
         try {
             const res = await addNotification(payLoad);
             if (res.success) {
