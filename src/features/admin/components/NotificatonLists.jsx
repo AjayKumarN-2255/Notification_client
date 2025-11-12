@@ -41,9 +41,18 @@ function NotificatonLists() {
 
                 <p className="text-gray-600 text-sm mb-3">{item.description}</p>
 
-                <div className="flex justify-between text-xs text-gray-500">
-                  <span>{item.category_name}</span>
-                  <span>Next: {item.next_notification_date}</span>
+                <div className="flex justify-between text-xs text-gray-500 ">
+                  <div>
+                    <h1>
+                      Categories:
+                    </h1>
+                    <span>
+                      {item?.category_names?.join(', ')}
+                    </span>
+                  </div>
+                  <span>
+                    Next: {item.next_notification_date}
+                  </span>
                 </div>
 
                 <div className="flex gap-4 mt-4">

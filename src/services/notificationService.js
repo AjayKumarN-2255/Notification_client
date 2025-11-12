@@ -20,3 +20,8 @@ export const deleteNotification = async (nId) => {
     const response = await api.delete(`/notification/${nId}`);
     return response.data;
 }
+
+export const addNotification = async (payLoad) => {
+    const response = await api.post('/notification', payLoad);
+    return response.data;
+}

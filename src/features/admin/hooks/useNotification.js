@@ -1,13 +1,23 @@
 import { useState, useEffect } from "react";
-import { getAllNotification, toggleSnooze, toggleStop, deleteNotification } from "../../../services/notificationService";
+import {
+    getAllNotification, toggleSnooze,
+    toggleStop, deleteNotification,
+    addNotification
+} from "../../../services/notificationService";
+import { addCategory } from "../../../services/adminService"
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function useNotification(options) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [deleteModal, setDeleteModal] = useState({ show: false, nId: null, title: "" });
-    
+
+    const [newCat, setNewCat] = useState("");
+    const [shouldNavigate, setShouldNavigate] = useState(false);
+    const navigate = useNavigate();
+
     const autoFetch = options?.autoFetch ?? true;
 
     const fetchNotifications = async () => {
@@ -27,6 +37,13 @@ export default function useNotification(options) {
             fetchNotifications();
         }
     }, [autoFetch]);
+
+
+    useEffect(() => {
+        if (shouldNavigate) {
+            navigate('/superadmin/dashboard');
+        }
+    }, [shouldNavigate, navigate]);
 
     const handleSnooze = async (nId) => {
         try {
@@ -74,18 +91,41 @@ export default function useNotification(options) {
         }
     }
 
-    const handleAddNotification = (data) => {
+    const handleAddNotification = async (payLoad) => {
 
-        data.category_names = data.category_names?.map(cat => cat.value);
-        data.notify_user_list = data.notify_user_list?.map(cat => cat.value);
-        data.notify_before = data.notify_before.number * data.notify_before.unit;
-        console.log(data);
+        payLoad.category_names = payLoad.category_names?.map(cat => cat.value);
+        payLoad.notify_user_list = payLoad.notify_user_list?.map(cat => cat.value);
+        payLoad.notify_before = payLoad.notify_before.number * payLoad.notify_before.unit;
+        try {
+            const res = await addNotification(payLoad);
+            if (res.success) {
+                setShouldNavigate(true);
+            }
+        } catch (err) {
+            console.log(err)
+            toast.error(err.response?.data?.message || "Failed to add notifications")
+        }
+    }
+
+    const handleAddCategory = async (catName, setCategory) => {
+        try {
+            const { data } = await addCategory({ name: catName });
+            setCategory((prev) => {
+                return [...prev, data]
+            });
+            toast.success('category added successfully')
+            setNewCat("");
+        } catch (err) {
+            console.log(err);
+            toast.error(err.response?.data?.message || "Failed to add category")
+        }
     }
 
 
     return {
         data, loading, error, deleteModal,
         handleSnooze, handleStop, handleModal,
-        setDeleteModal, handleDelete, handleAddNotification
+        setDeleteModal, handleDelete, handleAddNotification,
+        handleAddCategory, newCat, setNewCat
     };
 }

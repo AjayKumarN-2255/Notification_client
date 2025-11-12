@@ -10,7 +10,7 @@ function NotificationForm() {
     const { data: categories, setData: setCategories } = useFetch('/category');
     const { data: admins } = useFetch('/admin');
 
-    const { handleAddNotification } = useNotification({ autoFetch: false });
+    const { handleAddNotification, handleAddCategory, newCat, setNewCat } = useNotification({ autoFetch: false });
 
     const { control, register, handleSubmit, formState: { errors } } = useForm({
         mode: "onSubmit",
@@ -20,7 +20,7 @@ function NotificationForm() {
         },
     });
 
-    
+
     return (
         <div className='border-2 border-gray-100  rounded-lg w-full max-w-xl p-6 bg-white'>
             <form className='flex flex-col gap-6'
@@ -75,10 +75,16 @@ function NotificationForm() {
                             <div className="flex gap-2">
                                 <input
                                     type="text"
+                                    value={newCat}
+                                    onChange={(e) => { setNewCat(e.target.value) }}
                                     placeholder="Add new category"
                                     className="flex-1 border border-gray-300 rounded-md px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                                 />
-                                <button className="bg-blue-500 text-white px-3 py-1 rounded-md text-sm hover:bg-blue-600 transition">
+                                <button
+                                    key={'cat-btn'}
+                                    type="button"
+                                    className="bg-blue-500 text-white px-3 py-1 rounded-md text-sm hover:bg-blue-600 transition"
+                                    onClick={() => { handleAddCategory(newCat, setCategories) }}>
                                     Add
                                 </button>
                             </div>

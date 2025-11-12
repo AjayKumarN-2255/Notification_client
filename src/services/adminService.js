@@ -9,3 +9,8 @@ export const addAdmin = async (payLoad) => {
     const response = await api.post('/admin', payLoad)
     return response.data;
 }
+
+export const addCategory = async (payLoad) => {
+    const response = await api.post('/category', payLoad);
+    return response.data;
+}
