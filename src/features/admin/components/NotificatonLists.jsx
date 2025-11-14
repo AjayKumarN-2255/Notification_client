@@ -9,7 +9,6 @@ function NotificatonLists() {
     handleSnooze, handleStop, deleteModal, handleModal, handleDelete
   } = useNotification();
 
-  console.log(notifications)
   if (loading) {
     <div className="w-full h-full">
       <Loader />
@@ -27,7 +26,7 @@ function NotificatonLists() {
         notifications?.length > 0 ?
           <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
             {notifications?.map((item) => (
-              <Card item={item} handleModal={handleModal}
+              <Card key={item._id} item={item} handleModal={handleModal}
                 handleStop={handleStop} handleSnooze={handleSnooze}
               />
             ))}
