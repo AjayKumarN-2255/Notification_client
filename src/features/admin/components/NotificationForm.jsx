@@ -15,8 +15,7 @@ function NotificationForm() {
     const { control, register, handleSubmit, formState: { errors } } = useForm({
         mode: "onSubmit",
         defaultValues: {
-            frequency: 3,
-            notification_frequency: 1
+            frequency: 3
         },
     });
 
@@ -187,19 +186,43 @@ function NotificationForm() {
                     {errors?.notify_before && <p className="text-red-500 text-end text-sm me-4 mt-2">{errors?.notify_before.message}</p>}
                 </div>
 
-                <div className="flex gap-3 md:items-center w-full max-w-lg flex-col md:flex-row">
-                    <label className="text-gray-700 font-medium max-w-28 w-full">Notification Frequency:</label>
-                    <div className='flex gap-2 w-full'>
-                        <select
-                            className="flex-1 border bg-white border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                <div>
+                    <div className="flex gap-3 md:items-center w-full max-w-lg flex-col md:flex-row">
+                        <label className="text-gray-700 font-medium max-w-28 w-full">Notification Frequency:</label>
+                        <Controller
                             name="notification_frequency"
-                            {...register("notification_frequency")}
-                        >
-                            {NOTIFICATION_GAPS.map((period) => (
-                                <option key={period.value} value={period.value}>{period.label}</option>
-                            ))}
-                        </select>
+                            control={control}
+                            defaultValue={{ number: "", unit: 1 }} // keep number as string
+                            rules={{
+                                validate: value => Number(value.number) > 0 || "Number must be > 0"
+                            }}
+                            render={({ field }) => (
+                                <div className='flex gap-2 w-full'>
+                                    <input
+                                        type="number"
+                                        value={field.value.number}
+                                        onChange={(e) =>
+                                            field.onChange({ ...field.value, number: e.target.value })
+                                        }
+                                        className="border w-40 border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="Enter number"
+                                    />
+                                    <select
+                                        value={field.value.unit}
+                                        onChange={(e) =>
+                                            field.onChange({ ...field.value, unit: Number(e.target.value) })
+                                        }
+                                        className="border flex-1 bg-white border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                    >
+                                        {NOTIFY_BEFORE_OPTIONS.map((period) => (
+                                            <option key={period.value} value={period.value}>{period.label}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            )}
+                        />
                     </div>
+                    {errors?.notification_frequency && <p className="text-red-500 text-end text-sm me-4 mt-2">{errors?.notification_frequency.message}</p>}
                 </div>
 
                 <div className='flex justify-start'>

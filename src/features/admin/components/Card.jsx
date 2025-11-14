@@ -2,8 +2,6 @@ import React from 'react'
 
 function Card({ item, handleModal, handleStop, handleSnooze }) {
 
-    const toNumconvertor = { 'Month': 30, 'Week': 7, 'Day': 1 };
-
     const truncateText = (text, maxLength = 120) => {
         if (!text) return '';
         return text.length > maxLength ? text.slice(0, maxLength) + '…' : text;
@@ -51,12 +49,12 @@ function Card({ item, handleModal, handleStop, handleSnooze }) {
             <div className="flex flex-col gap-2 text-xs text-gray-500">
                 <div className="flex justify-between w-full">
                     <span>
-                        Notify Before: {item.notify_before / toNumconvertor[item.notify_before_unit]} {item.notify_before_unit}
+                        Notify Before: {item.notify_before} {item.notify_before_unit}
                     </span>
                     <span>Frequency: every {item.frequency} month</span>
                 </div>
                 <span>
-                    Reminds <span className="font-semibold">{item.notific_gap_unit}</span> between notify before and next notification date.
+                    Reminds in <span className="font-semibold">{item.notification_frequency} {item.notific_gap_unit}</span> gap between notify before and next notification date.
                 </span>
             </div>
 

@@ -96,14 +96,13 @@ export default function useNotification(options) {
 
         payLoad.category_names = payLoad.category_names?.map(cat => cat.value);
         payLoad.notify_user_list = payLoad.notify_user_list?.map(cat => cat.value);
-        const selectedOption = NOTIFY_BEFORE_OPTIONS.find(
-            opt => opt.value === payLoad.notify_before.unit
-        );
+        const selectedOption = NOTIFY_BEFORE_OPTIONS.find(opt => opt.value === payLoad.notify_before.unit);
         payLoad.notify_before_unit = selectedOption?.label;
-        const selectedNotificGap = NOTIFICATION_GAPS.find(opt => opt.value === parseInt(payLoad.notification_frequency));
-        payLoad.notific_gap_unit = selectedNotificGap.label;
-        payLoad.notify_before = payLoad.notify_before.number * payLoad.notify_before.unit; 
-        
+        const selectedNotificGap = NOTIFY_BEFORE_OPTIONS.find(opt => opt.value === payLoad.notification_frequency.unit);
+        payLoad.notific_gap_unit = selectedNotificGap?.label;
+        payLoad.notify_before = payLoad.notify_before.number;
+        payLoad.notification_frequency = payLoad.notification_frequency.number;
+
         try {
             const res = await addNotification(payLoad);
             if (res.success) {
