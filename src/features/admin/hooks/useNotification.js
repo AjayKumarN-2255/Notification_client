@@ -6,8 +6,8 @@ import {
 } from "../../../services/notificationService";
 import { addCategory } from "../../../services/adminService";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
-import { NOTIFY_BEFORE_OPTIONS, NOTIFICATION_GAPS } from "../../../utils/constants";
+import { useNavigate, useLocation } from "react-router-dom";
+import { NOTIFY_BEFORE_OPTIONS } from "../../../utils/constants";
 
 export default function useNotification(options) {
     const [data, setData] = useState([]);
@@ -15,16 +15,30 @@ export default function useNotification(options) {
     const [error, setError] = useState(null);
     const [deleteModal, setDeleteModal] = useState({ show: false, nId: null, title: "" });
 
-    const [newCat, setNewCat] = useState("");
+    const [selectedCat, setSelectedCat] = useState([]);
     const [shouldNavigate, setShouldNavigate] = useState(false);
+    const [newCat, setNewCat] = useState("");
+
     const navigate = useNavigate();
+    const location = useLocation();
 
     const autoFetch = options?.autoFetch ?? true;
+
+    const getSelectedCategories = () => {
+        const params = new URLSearchParams(location.search);
+        return params.get("categories")?.split(",").filter(c => c?.trim()) || [];
+    };
+
+    useEffect(() => {
+        const selectedOptions = getSelectedCategories().map(cat => ({ value: cat, label: cat }));
+        setSelectedCat(selectedOptions);
+    }, [location]);
 
     const fetchNotifications = async () => {
         try {
             setLoading(true);
-            const { data } = await getAllNotification();
+            const selected = getSelectedCategories();
+            const { data } = await getAllNotification(selected);
             setData(data);
         } catch (err) {
             setError(err.response?.data?.message || "Failed to fetch notifications");
@@ -37,7 +51,7 @@ export default function useNotification(options) {
         if (autoFetch) {
             fetchNotifications();
         }
-    }, [autoFetch]);
+    }, [autoFetch, location]);
 
 
     useEffect(() => {
@@ -131,8 +145,8 @@ export default function useNotification(options) {
 
     return {
         data, loading, error, deleteModal,
-        handleSnooze, handleStop, handleModal,
+        handleSnooze, handleStop, handleModal, selectedCat,
         setDeleteModal, handleDelete, handleAddNotification,
-        handleAddCategory, newCat, setNewCat
+        handleAddCategory, newCat, setNewCat, setSelectedCat
     };
 }

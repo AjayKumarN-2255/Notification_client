@@ -2,7 +2,7 @@ import useFetch from '../../../hooks/useFetch';
 import useNotification from '../hooks/useNotification'
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
-import { FREQUENCY_PERIODS, NOTIFY_BEFORE_OPTIONS, NOTIFICATION_GAPS, findMinDate } from "../../../utils/constants";
+import { FREQUENCY_PERIODS, NOTIFY_BEFORE_OPTIONS, findMinDate } from "../../../utils/constants";
 import { titleValidation, descriptionValidation, notification_date } from "../../../utils/notificationValidation";
 
 function NotificationForm() {

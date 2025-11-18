@@ -13,17 +13,6 @@ export const NOTIFY_BEFORE_OPTIONS = [
     { value: 30, label: "Month" },
 ];
 
-export const NOTIFICATION_GAPS = [
-    { value: 1, label: "Daily" },
-    { value: 2, label: "Every 2 days" },
-    { value: 3, label: "Every 3 days" },
-    { value: 7, label: "Weekly" },
-    { value: 14, label: "Every 2 weeks" },
-    { value: 30, label: "Monthly" },
-];
-
-
-
 export const findMinDate = () => {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
