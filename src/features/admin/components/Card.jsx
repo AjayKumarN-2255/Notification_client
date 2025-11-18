@@ -7,6 +7,13 @@ function Card({ item, handleModal, handleStop, handleSnooze }) {
         return text.length > maxLength ? text.slice(0, maxLength) + '…' : text;
     };
 
+    // const handleCategory = (name) => {
+    //     setSelectedCat((prev) => {
+    //         const data = { value: name, label: name }
+    //         return [...prev, data]
+    //     })
+    // }
+
     return (
         <div
             key={item._id}

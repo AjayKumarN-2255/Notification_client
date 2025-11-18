@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 function NotificatonLists() {
 
-  const { data: notifications, loading, error, setDeleteModal,
+  const { data: notifications, loading, error, setDeleteModal, setSelectedCat,
     handleSnooze, handleStop, deleteModal, handleModal, handleDelete, selectedCat
   } = useNotification();
 
@@ -58,6 +58,7 @@ function NotificatonLists() {
               {notifications?.map((item) => (
                 <Card key={item._id} item={item} handleModal={handleModal}
                   handleStop={handleStop} handleSnooze={handleSnooze}
+                  setSelectedCat={setSelectedCat}
                 />
               ))}
             </div>
