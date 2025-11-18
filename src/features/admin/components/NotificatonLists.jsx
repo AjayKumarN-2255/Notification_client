@@ -5,28 +5,21 @@ import Loader from '../../../components/Loader';
 import Modal from '../../../components/Modal';
 import Card from './Card';
 import Select from "react-select";
-
-import { useNavigate } from "react-router-dom";
+import useFilter from '../hooks/useFilter';
 
 
 function NotificatonLists() {
 
-  const { data: notifications, loading, error, setDeleteModal, setSelectedCat,
-    handleSnooze, handleStop, deleteModal, handleModal, handleDelete, selectedCat
+  const { data: notifications, loading, error, setDeleteModal,
+    handleSnooze, handleStop, deleteModal, handleModal, handleDelete
   } = useNotification();
 
-  const navigate = useNavigate();
   const { data: categories } = useFetch('/category');
 
-  const handleCategoryChange = (selectedOptions) => {
-    const values = selectedOptions?.map(o => o.value) || [];
-    if (values.length > 0) {
-      const query = values.join(",");
-      navigate(`/admin/dashboard?categories=${query}`);
-    } else {
-      navigate(`/admin/dashboard`);
-    }
-  };
+  const { handleCategoryChange, searchTerm, setSearchTerm,
+    selectedCat, setSelectedCat, handleSearch
+  } = useFilter();
+
 
   if (loading) {
     <div className="w-full h-full">
@@ -39,18 +32,33 @@ function NotificatonLists() {
     <div className="text-red-500 text-center mt-4">{error}</div>
   ) : (
     <Fragment>
-      <div className='w-full p-4 flex justify-between items-center'>
-        <h2 className="text-xl font-semibold">Notifications</h2>
+      <div className='w-full p-4 gap-4 flex flex-col lg:flex-row justify-between lg:items-center'>
+        <div className="flex items-center gap-2">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Type to search..."
+            className="flex-1 px-4 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <button
+            onClick={handleSearch}
+            className="px-4 py-1 bg-blue-800 text-white rounded hover:bg-blue-700 transition-colors"
+          >
+            Search
+          </button>
+        </div>
         <div>
           <Select
             isMulti
             value={selectedCat}
             options={categories?.map((cat) => ({ value: cat.name, label: cat.name }))}
             onChange={handleCategoryChange}
-            className='min-w-56 w-fit'
+            className='min-w-full lg:min-w-56 w-fit'
           />
         </div>
       </div>
+      <h2 className="text-xl font-semibold mx-4">Notifications</h2>
       <div className="p-4 w-full h-full">
         {
           notifications?.length > 0 ?

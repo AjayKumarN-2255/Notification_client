@@ -15,30 +15,34 @@ export default function useNotification(options) {
     const [error, setError] = useState(null);
     const [deleteModal, setDeleteModal] = useState({ show: false, nId: null, title: "" });
 
-    const [selectedCat, setSelectedCat] = useState([]);
     const [shouldNavigate, setShouldNavigate] = useState(false);
     const [newCat, setNewCat] = useState("");
+
 
     const navigate = useNavigate();
     const location = useLocation();
 
     const autoFetch = options?.autoFetch ?? true;
 
-    const getSelectedCategories = () => {
+    const getQueryParam = (paramName, isArray = true) => {
         const params = new URLSearchParams(location.search);
-        return params.get("categories")?.split(",").filter(c => c?.trim()) || [];
-    };
+        const value = params.get(paramName);
 
-    useEffect(() => {
-        const selectedOptions = getSelectedCategories().map(cat => ({ value: cat, label: cat }));
-        setSelectedCat(selectedOptions);
-    }, [location]);
+        if (!value) return isArray ? [] : "";
+
+        if (isArray) {
+            return value.split(",").map((v) => v.trim()).filter(Boolean);
+        } else {
+            return value;
+        }
+    };
 
     const fetchNotifications = async () => {
         try {
             setLoading(true);
-            const selected = getSelectedCategories();
-            const { data } = await getAllNotification(selected);
+            const Querycat = getQueryParam("categories");
+            const Querysearch = getQueryParam("searchTerm", false)
+            const { data } = await getAllNotification(Querycat, Querysearch);
             setData(data);
         } catch (err) {
             setError(err.response?.data?.message || "Failed to fetch notifications");
@@ -107,7 +111,6 @@ export default function useNotification(options) {
     }
 
     const handleAddNotification = async (payLoad) => {
-
         payLoad.category_names = payLoad.category_names?.map(cat => cat.value);
         payLoad.notify_user_list = payLoad.notify_user_list?.map(cat => cat.value);
         const selectedOption = NOTIFY_BEFORE_OPTIONS.find(opt => opt.value === payLoad.notify_before.unit);
@@ -145,8 +148,8 @@ export default function useNotification(options) {
 
     return {
         data, loading, error, deleteModal,
-        handleSnooze, handleStop, handleModal, selectedCat,
+        handleSnooze, handleStop, handleModal,
         setDeleteModal, handleDelete, handleAddNotification,
-        handleAddCategory, newCat, setNewCat, setSelectedCat
+        handleAddCategory, newCat, setNewCat,
     };
 }
