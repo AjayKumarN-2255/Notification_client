@@ -46,7 +46,9 @@ export default function useNotification(options) {
             setLoading(true);
             const Querycat = getQueryParam("categories");
             const Querysearch = getQueryParam("searchTerm", false);
-            const { data } = await getAllNotification(Querycat, Querysearch);
+            const QueryFrom = getQueryParam("from", false);
+            const QueryTo = getQueryParam("to", false);
+            const { data } = await getAllNotification(Querycat, Querysearch, QueryFrom, QueryTo);
             setData(data);
             await delay(1000);
             setLoading(false);

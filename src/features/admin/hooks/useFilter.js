@@ -36,6 +36,10 @@ export default function useFilter() {
         setSelectedCat(selectedOptions);
         const selectedSearchTerm = getQueryParam("searchTerm", false);
         setSearchTerm(selectedSearchTerm);
+        const selectedFrom = getQueryParam("from", false);
+        setFrom(selectedFrom);
+        const selectedTo = getQueryParam("to", false);
+        setTo(selectedTo);
     }, [location]);
 
     const handleSearch = () => {
@@ -47,6 +51,37 @@ export default function useFilter() {
         params.set("searchTerm", searchTerm.trim());
         navigate(`/admin/dashboard?${params.toString()}`);
     };
+
+    const handleFromDate = (e) => {
+        const date = e.target.value;
+        setFrom(date);
+        if (!date) {
+            return;
+        }
+        const params = new URLSearchParams(location.search);
+        params.set("from", date);
+        navigate(`/admin/dashboard?${params.toString()}`);
+    }
+
+    const handleToDate = (e) => {
+        const date = e.target.value;
+        setTo(date);
+        if (!date) {
+            return;
+        }
+        const params = new URLSearchParams(location.search);
+        params.set("to", date);
+        navigate(`/admin/dashboard?${params.toString()}`);
+    }
+
+    const clearDateFilter = () => {
+        setFrom("");
+        setTo("");
+        const params = new URLSearchParams(location.search);
+        params.delete("from");
+        params.delete("to");
+        navigate(`/admin/dashboard?${params.toString()}`);
+    }
 
     const handleCategoryChange = (selectedOptions) => {
         const values = selectedOptions?.map(o => o.value) || [];
@@ -63,8 +98,8 @@ export default function useFilter() {
 
 
     return {
-        selectedCat, setSelectedCat, handleCategoryChange,
-        searchTerm, setSearchTerm, handleSearch, handleClearSearch
+        selectedCat, setSelectedCat, handleCategoryChange, From, To, clearDateFilter,
+        searchTerm, setSearchTerm, handleSearch, handleClearSearch, handleFromDate, handleToDate
     }
 
 }

@@ -1,10 +1,15 @@
 import api from "./api";
 
 
-export const getAllNotification = async (selectedCat, searchTerm) => {
+export const getAllNotification = async (selectedCat, searchTerm, QueryFrom, QueryTo) => {
 
     const response = await api.get("/notification", {
-        params: { categories: selectedCat, searchTerm }
+        params: {
+            categories: selectedCat,
+            searchTerm,
+            from: QueryFrom,
+            to: QueryTo
+        }
     });
     return response.data;
 }

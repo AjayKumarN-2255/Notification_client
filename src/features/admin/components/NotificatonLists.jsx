@@ -6,7 +6,8 @@ import Modal from '../../../components/Modal';
 import Card from './Card';
 import Select from "react-select";
 import useFilter from '../hooks/useFilter';
-
+import Search from './Search';
+import DateFilter from './DateFilter';
 
 function NotificatonLists() {
 
@@ -16,8 +17,9 @@ function NotificatonLists() {
 
   const { data: categories } = useFetch('/category');
 
-  const { handleCategoryChange, searchTerm, setSearchTerm,
-    selectedCat, setSelectedCat, handleSearch, handleClearSearch
+  const { handleCategoryChange, searchTerm, setSearchTerm, From, To, clearDateFilter,
+    selectedCat, setSelectedCat, handleSearch, handleClearSearch, handleFromDate,
+    handleToDate
   } = useFilter();
 
 
@@ -35,36 +37,10 @@ function NotificatonLists() {
     <Fragment>
       <div className='px-4'>
         <div className='w-full p-4 gap-4 flex flex-col 2xl:flex-row justify-between bg-gray-50 rounded-lg shadow-sm'>
-
           <div className='flex flex-col w-full lg:flex-row gap-4  xl:justify-between 2xl:max-w-lg lg:gap-8'>
 
-            <div className="flex flex-col sm:flex-row w-full relative md:items-center xl:max-w-lg gap-3">
-              <div className="relative flex-1 w-full">
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Type to search..."
-                  className="w-full py-1 px-8 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                {searchTerm && (
-                  <button
-                    onClick={handleClearSearch}
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-700"
-                  >
-                    ✕
-                  </button>
-                )}
-              </div>
-              <button
-                onClick={handleSearch}
-                className="px-4 py-1 bg-blue-800 text-white rounded hover:bg-blue-700 transition-colors"
-              >
-                Search
-              </button>
-            </div>
-
-
+            <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm}
+              handleSearch={handleSearch} handleClearSearch={handleClearSearch} />
             <div className='flex 2xl:hidden'>
               <Select
                 isMulti
@@ -76,6 +52,7 @@ function NotificatonLists() {
             </div>
 
           </div>
+
           <div className='hidden 2xl:flex'>
             <Select
               isMulti
@@ -86,28 +63,8 @@ function NotificatonLists() {
             />
           </div>
 
-          <div className='flex flex-col md:flex-row gap-3 w-full xl:max-w-lg justify-between'>
-            <div className="flex gap-2 items-center md:flex-1">
-              <label className="text-gray-700 font-medium w-full max-w-12">From:</label>
-              <input
-                type="date"
-                className="flex-1 px-4 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div className="flex gap-2 items-center md:flex-1">
-              <label className="text-gray-700 font-medium w-full max-w-12">To:</label>
-              <input
-                type="date"
-                className="flex-1 px-4 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <button
-              className="px-4 py-0.5 bg-blue-800 text-white rounded hover:bg-blue-700 transition-colors"
-            >
-              clear
-            </button>
-          </div>
-
+          <DateFilter From={From} To={To} clearDateFilter={clearDateFilter}
+            handleFromDate={handleFromDate} handleToDate={handleToDate} />
         </div>
       </div>
       <h2 className="text-xl font-semibold mx-4 mt-4">Notifications</h2>
