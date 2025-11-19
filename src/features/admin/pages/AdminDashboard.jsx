@@ -4,7 +4,7 @@ import NotificatonLists from '../components/NotificatonLists'
 function AdminDashboard() {
 
   return (
-    <div className='w-full h-full md:overflow-y-scroll'>
+    <div className='w-full md:h-full md:overflow-y-scroll'>
       <NotificatonLists />
     </div>
   )
