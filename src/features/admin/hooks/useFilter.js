@@ -27,6 +27,10 @@ export default function useFilter() {
 
     const handleClearSearch = () => {
         const params = new URLSearchParams(location.search);
+        if (!params.get("searchTerm")) {
+            setSearchTerm("");
+            return;
+        }
         params.delete("searchTerm");
         navigate(`/admin/dashboard?${params.toString()}`);
     }
@@ -75,6 +79,10 @@ export default function useFilter() {
     }
 
     const clearDateFilter = () => {
+        if (!From && !To) {
+            toast.error("nothing to clear");
+            return;
+        }
         setFrom("");
         setTo("");
         const params = new URLSearchParams(location.search);
