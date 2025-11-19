@@ -50,7 +50,7 @@ export default function useNotification(options) {
             const QueryTo = getQueryParam("to", false);
             const { data } = await getAllNotification(Querycat, Querysearch, QueryFrom, QueryTo);
             setData(data);
-            await delay(1000);
+            await delay(500);
             setLoading(false);
         } catch (err) {
             setError(err.response?.data?.message || "Failed to fetch notifications");
