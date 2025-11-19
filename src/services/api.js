@@ -28,6 +28,10 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config; 
 
+    if (originalRequest.url.includes("/auth/login")) {
+      return Promise.reject(error);
+    }
+
     if (originalRequest.url.includes("/auth/refresh")) {
       return Promise.reject(error);
     }
