@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function useFilter() {
 
     const [selectedCat, setSelectedCat] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [From, setFrom] = useState("");
+    const [To, setTo] = useState("");
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -21,7 +24,13 @@ export default function useFilter() {
             return value;
         }
     };
-    
+
+    const handleClearSearch = () => {
+        const params = new URLSearchParams(location.search);
+        params.delete("searchTerm");
+        navigate(`/admin/dashboard?${params.toString()}`);
+    }
+
     useEffect(() => {
         const selectedOptions = getQueryParam("categories").map(cat => ({ value: cat, label: cat }));
         setSelectedCat(selectedOptions);
@@ -31,11 +40,11 @@ export default function useFilter() {
 
     const handleSearch = () => {
         const params = new URLSearchParams(location.search);
-        if (searchTerm && searchTerm.trim() !== "") {
-            params.set("searchTerm", searchTerm.trim());
-        } else {
-            params.delete("searchTerm");
+        if (!searchTerm && searchTerm.trim() === "") {
+            toast.error("search key needed");
+            return;
         }
+        params.set("searchTerm", searchTerm.trim());
         navigate(`/admin/dashboard?${params.toString()}`);
     };
 
@@ -55,7 +64,7 @@ export default function useFilter() {
 
     return {
         selectedCat, setSelectedCat, handleCategoryChange,
-        searchTerm, setSearchTerm, handleSearch
+        searchTerm, setSearchTerm, handleSearch, handleClearSearch
     }
 
 }
