@@ -6,12 +6,12 @@ import LoginPage from './features/auth/pages/LoginPage';
 
 import AdminLayout from "./layouts/AdminLayout";
 import AdminDashboard from "./features/admin/pages/AdminDashboard";
+import AddNotificationPage from "./features/admin/pages/AddNotificationPage";
 
 
 import SuperAdminLayout from "./layouts/SuperAdminLayout";
 import SuperDashboard from "./features/superAdmin/pages/SuperDashboard";
 import AddAdminPage from "./features/superAdmin/pages/AddAdminPage";
-import AddNotificationPage from "./features/admin/pages/AddNotificationPage";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
 
@@ -55,10 +55,10 @@ function App() {
     <>
       <RouterProvider router={router} />
       <Toaster
-        position="top-right"       
-        reverseOrder={false}       
+        position="top-right"
+        reverseOrder={false}
         toastOptions={{
-          duration: 3000,          
+          duration: 3000,
           style: { fontSize: '14px' },
         }}
       />
