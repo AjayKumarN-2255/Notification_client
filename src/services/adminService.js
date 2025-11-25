@@ -10,6 +10,11 @@ export const addAdmin = async (payLoad) => {
     return response.data;
 }
 
+export const editAdmin = async (payLoad, adminId) => {
+    const response = await api.patch(`/admin/${adminId}`, payLoad)
+    return response.data;
+}
+
 export const addCategory = async (payLoad) => {
     const response = await api.post('/category', payLoad);
     return response.data;

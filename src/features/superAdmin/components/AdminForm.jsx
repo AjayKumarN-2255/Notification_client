@@ -1,12 +1,12 @@
 import { useForm } from "react-hook-form";
 import { emailValidation, passwordValidation, usernameValidation, phoneValidation } from '../../../utils/adminFormValidation';
-import useAddAdmin from "../hooks/useAddAdmin";
+import useManageAdmin from "../hooks/useManageAdmin";
 
 
 function AdminForm() {
 
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const { handleAddAdmin, error, loading } = useAddAdmin();
+  const { handleAddAdmin, error, loading } = useManageAdmin();
 
   return (
     <div className='border-2 border-gray-100  rounded-lg w-full max-w-xl p-6 bg-white'>

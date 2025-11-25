@@ -14,6 +14,7 @@ import SuperDashboard from "./features/superAdmin/pages/SuperDashboard";
 import AddAdminPage from "./features/superAdmin/pages/AddAdminPage";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
+import EditAdminPage from "./features/superAdmin/pages/EditAdminPage";
 
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
           children: [
             { path: 'dashboard', element: <SuperDashboard /> },
             { path: 'add-admin', element: <AddAdminPage /> },
+            { path: 'edit-admin/:id', element: <EditAdminPage /> },
           ]
         }
       ]
