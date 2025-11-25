@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { addAdmin, editAdmin } from "../../../services/adminService";
+import { addAdmin, editAdmin, deleteAdmin } from "../../../services/adminService";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
@@ -9,11 +9,17 @@ function useManageAdmin() {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
     const [shouldNavigate, setShouldNavigate] = useState(false);
+    const [deleteModal, setDeleteModal] = useState({ show: false, aId: null, title: "" });
 
     const [show, setShow] = useState(false);
 
     const handleEdit = (adminId) => {
         navigate(`/superadmin/edit-admin/${adminId}`)
+    }
+
+    const handleModal = (aId, title) => {
+        setShow(false)
+        setDeleteModal({ show: true, aId, title });
     }
 
     useEffect(() => {
@@ -58,9 +64,28 @@ function useManageAdmin() {
         }
     }
 
+    async function handleDeleteAdmin(userId, setAdmin) {
+        try {
+            setError(null);
+            setLoading(true);
+            const res = await deleteAdmin(userId);
+            if (res.success) {
+                setAdmin(prev => {
+                    return prev.filter((admin) => admin._id != res.data)
+                })
+            }
+        } catch (err) {
+            const message = err?.response?.data?.message || "Failed to edit admin";
+            toast.error(message);
+            setError(message);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     return {
-        handleAddAdmin, error, loading, show,
-        setShow, handleEdit, handleEditAdmin
+        handleAddAdmin, error, loading, show, deleteModal, handleModal,
+        setShow, handleEdit, handleEditAdmin, setDeleteModal, handleDeleteAdmin
     }
 }
 

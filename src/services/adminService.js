@@ -15,6 +15,11 @@ export const editAdmin = async (payLoad, adminId) => {
     return response.data;
 }
 
+export const deleteAdmin = async (adminId) => {
+    const response = await api.delete(`/admin/${adminId}`)
+    return response.data;
+}
+
 export const addCategory = async (payLoad) => {
     const response = await api.post('/category', payLoad);
     return response.data;

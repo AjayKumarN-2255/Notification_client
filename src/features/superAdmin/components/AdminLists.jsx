@@ -1,11 +1,13 @@
 import Loader from "../../../components/Loader";
 import useFetch from "../../../hooks/useFetch";
 import useManageAdmin from "../hooks/useManageAdmin";
+import Modal from "../../../components/Modal";
 
 function AdminLists() {
 
-  const { data: admins, loading, error } = useFetch('/admin');
-  const { show, setShow, handleEdit } = useManageAdmin();
+  const { data: admins, setData: setAdmin, loading, error } = useFetch('/admin');
+  const { show, setShow, handleEdit, deleteModal,
+    handleModal, setDeleteModal, handleDeleteAdmin } = useManageAdmin();
 
   if (loading) {
     return (
@@ -38,7 +40,8 @@ function AdminLists() {
                   onClick={() => { handleEdit(admin._id) }}>
                   Edit
                 </button>
-                <button className="px-3 py-1 text-sm text-red-600 hover:bg-red-100 rounded">
+                <button className="px-3 py-1 text-sm text-red-600 hover:bg-red-100 rounded"
+                  onClick={() => handleModal(admin._id, admin.username)}>
                   Delete
                 </button>
               </div>
@@ -52,6 +55,17 @@ function AdminLists() {
           </p>
         </div>
       ))}
+      {deleteModal.show && (
+        <Modal
+          show={deleteModal.show}
+          title={deleteModal.title}
+          onCancel={() => setDeleteModal({ show: false, aId: null, title: "" })}
+          onDelete={() => {
+            handleDeleteAdmin(deleteModal.aId, setAdmin);
+            setDeleteModal({ show: false, aId: null, title: "" });
+          }}
+        />
+      )}
     </div>
   );
 
