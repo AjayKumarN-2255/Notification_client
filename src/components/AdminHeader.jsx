@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import useLogout from '../hooks/useLogout';
+import { Link } from 'react-router-dom';
 
 function AdminHeader() {
 
@@ -19,11 +20,13 @@ function AdminHeader() {
                 <div className="flex items-center space-x-5">
                     <div className="flex items-center gap-2">
                         <span className="text-gray-700 font-medium">{user?.username}</span>
-                        <img
-                            src="https://i.pravatar.cc/40"
-                            alt="profile"
-                            className="w-10 h-10 rounded-full border-2 border-gray-300"
-                        />
+                        <Link to={'/admin/edit-account'}>
+                            <img
+                                src="https://i.pravatar.cc/40"
+                                alt="profile"
+                                className="w-10 h-10 rounded-full border-2 border-gray-300 cursor-pointer"
+                            />
+                        </Link>
                     </div>
                     <button
                         className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition-colors duration-200"

@@ -12,9 +12,11 @@ import AddNotificationPage from "./features/admin/pages/AddNotificationPage";
 import SuperAdminLayout from "./layouts/SuperAdminLayout";
 import SuperDashboard from "./features/superAdmin/pages/SuperDashboard";
 import AddAdminPage from "./features/superAdmin/pages/AddAdminPage";
+import EditSuperAdmin from "./features/superAdmin/pages/EditSuperAdmin";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
 import EditAdminPage from "./features/superAdmin/pages/EditAdminPage";
+import EditAdminAccount from "./features/admin/pages/EditAdminAccount";
 
 
 function App() {
@@ -32,6 +34,7 @@ function App() {
           children: [
             { path: 'dashboard', element: <AdminDashboard /> },
             { path: 'add-notification', element: <AddNotificationPage /> },
+            { path: 'edit-account', element: <EditAdminAccount /> }
           ]
         }
       ]
@@ -45,6 +48,7 @@ function App() {
           children: [
             { path: 'dashboard', element: <SuperDashboard /> },
             { path: 'add-admin', element: <AddAdminPage /> },
+            { path: 'edit-account', element: <EditSuperAdmin /> },
             { path: 'edit-admin/:id', element: <EditAdminPage /> },
           ]
         }
