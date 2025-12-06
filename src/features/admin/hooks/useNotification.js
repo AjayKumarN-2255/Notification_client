@@ -119,7 +119,7 @@ export default function useNotification(options) {
 
     const handleAddNotification = async (payLoad) => {
         payLoad.category_names = payLoad.category_names?.map(cat => cat.value);
-        payLoad.notify_user_list = payLoad.notify_user_list?.map(cat => cat.value);
+        payLoad.notify_user_list = (payLoad.notify_user_list?.map(cat => cat.value)) || [];
         const selectedOption = NOTIFY_BEFORE_OPTIONS.find(opt => opt.value === payLoad.notify_before.unit);
         payLoad.notify_before_unit = selectedOption?.label;
         const selectedNotificGap = NOTIFY_BEFORE_OPTIONS.find(opt => opt.value === payLoad.notification_frequency.unit);

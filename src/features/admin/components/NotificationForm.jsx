@@ -28,7 +28,9 @@ function NotificationForm() {
 
                 <div>
                     <div className="flex gap-3 md:items-center w-full max-w-lg flex-col md:flex-row">
-                        <label className="text-gray-700 font-medium max-w-28 w-full">Title:</label>
+                        <label className="text-gray-700 font-medium max-w-28 w-full">
+                            <span className='text-red-500'>*</span>
+                            Title:</label>
                         <input
                             type="text"
                             {...register("title", titleValidation)}
@@ -41,7 +43,10 @@ function NotificationForm() {
 
                 <div>
                     <div className="flex gap-3 md:items-center w-full max-w-lg flex-col md:flex-row">
-                        <label className="text-gray-700 font-medium max-w-28 w-full">Description:</label>
+                        <label className="text-gray-700 font-medium max-w-28 w-full">
+                            <span className='text-red-500'>*</span>
+                            Description:
+                        </label>
                         <textarea
                             {...register("description", descriptionValidation)}
                             className="border flex-1 border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
@@ -53,7 +58,10 @@ function NotificationForm() {
 
                 <div>
                     <div className="flex gap-3 md:items-center w-full max-w-lg flex-col md:flex-row">
-                        <label className="text-gray-700 font-medium max-w-28 w-full">Category:</label>
+                        <label className="text-gray-700 font-medium max-w-28 w-full">
+                            <span className='text-red-500'>*</span>
+                            Category:
+                        </label>
                         <div className="w-full flex flex-col gap-2 p-3 border rounded-md">
                             <Controller
                                 name="category_names"
@@ -98,9 +106,6 @@ function NotificationForm() {
                         <div className="w-full flex flex-col gap-2 p-3 border rounded-md">
                             <Controller
                                 name="notify_user_list"
-                                rules={{
-                                    required: "Please select at least one user"
-                                }}
                                 control={control}
                                 render={({ field }) => (
                                     <Select
@@ -114,11 +119,13 @@ function NotificationForm() {
                             />
                         </div>
                     </div>
-                    {errors?.notify_user_list && <p className="text-red-500 text-end text-sm me-4 mt-2">{errors?.notify_user_list?.message}</p>}
                 </div>
 
                 <div className="flex gap-3 md:items-center w-full max-w-lg flex-col md:flex-row">
-                    <label className="text-gray-700 font-medium max-w-28 w-full ">Frequency:</label>
+                    <label className="text-gray-700 font-medium max-w-28 w-full ">
+                        <span className='text-red-500'>*</span>
+                        Frequency:
+                    </label>
                     <select
                         className="border flex-1 bg-white border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1
                         focus:ring-blue-500 focus:border-blue-500"
@@ -134,7 +141,10 @@ function NotificationForm() {
 
                 <div>
                     <div className="flex gap-3 md:items-center w-full max-w-lg flex-col md:flex-row">
-                        <label className="text-gray-700 font-medium max-w-28 w-full">Notification date:</label>
+                        <label className="text-gray-700 font-medium max-w-28 w-full">
+                            <span className='text-red-500'>*</span>
+                            Notification date:
+                        </label>
                         <input
                             type="date"
                             name="notification_date"
@@ -149,7 +159,10 @@ function NotificationForm() {
 
                 <div>
                     <div className="flex gap-3 md:items-center w-full max-w-lg flex-col md:flex-row">
-                        <label className="text-gray-700 font-medium max-w-28 w-full">Notify before:</label>
+                        <label className="text-gray-700 font-medium max-w-28 w-full">
+                            <span className='text-red-500'>*</span>
+                            Notify before:
+                        </label>
                         <Controller
                             name="notify_before"
                             control={control}
@@ -188,7 +201,10 @@ function NotificationForm() {
 
                 <div>
                     <div className="flex gap-3 md:items-center w-full max-w-lg flex-col md:flex-row">
-                        <label className="text-gray-700 font-medium max-w-28 w-full">Notification Frequency:</label>
+                        <label className="text-gray-700 font-medium max-w-28 w-full">
+                            <span className='text-red-500'>*</span>
+                            Notification Frequency:
+                        </label>
                         <Controller
                             name="notification_frequency"
                             control={control}
