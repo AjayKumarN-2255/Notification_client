@@ -5,6 +5,13 @@ export const Login = async (payload) => {
   return response.data;
 };
 
+export const editAccount = async (userId, payload) => {
+  const response = await api.put(`/auth/edit-details/${userId}`, payload, {
+    requiresAuth: true,   
+    withCredentials: true     
+  });
+  return response.data;
+};
 
 export const refreshToken = async () => {
   const response = await api.post('/auth/refresh', {}, { requiresAuth: false, withCredentials: true });

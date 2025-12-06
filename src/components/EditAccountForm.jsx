@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { emailValidation, passwordValidation, usernameValidation, phoneValidation } from '../utils/adminFormValidation';
+import { phoneValidation } from '../utils/adminFormValidation';
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import useManageAccount from "../hooks/useManageAccount"
@@ -8,10 +8,10 @@ function EditAccountForm() {
 
     const { user } = useSelector(state => state.auth);
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
-    const { loading, error, handleAdminAccount } = useManageAccount();
+    const { loading, error, handleAccount } = useManageAccount();
 
     const onSubmit = (formData) => {
-        handleAdminAccount({ ...formData, userId: user?._id });
+        handleAccount({ ...formData, userId: user?._id });
     };
 
     useEffect(() => {
@@ -34,7 +34,8 @@ function EditAccountForm() {
                         <label className="text-gray-700 font-medium max-w-28 w-full">Username:</label>
                         <input
                             type="text"
-                            {...register("username", usernameValidation)}
+                            {...register("username")}
+                            disabled={true}
                             className="border flex-1 border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Enter username"
                         />
@@ -45,7 +46,8 @@ function EditAccountForm() {
                     <label className="text-gray-700 font-medium max-w-28 w-full">Email:</label>
                     <input
                         type="email"
-                        {...register("email", emailValidation)}
+                        {...register("email")}
+                        disabled={true}
                         className="border flex-1 border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Enter email"
                     />
@@ -65,22 +67,22 @@ function EditAccountForm() {
                     <label className="text-gray-700 font-medium w-full max-w-28">Password:</label>
                     <input
                         type="text"
-                        {...register("password", passwordValidation)}
+                        {...register("password")}
                         className="border flex-1 border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Enter your password"
                     />
                 </div>
-                {errors?.password && <p className="text-red-500 space-y-2">{errors?.password?.message}</p>}
+
                 <div className="flex gap-3 md:items-center w-full max-w-lg flex-col md:flex-row">
                     <label className="text-gray-700 font-medium w-full max-w-28">New Password:</label>
                     <input
                         type="text"
-                        {...register("new_password", passwordValidation)}
+                        {...register("new_password")}
                         className="border flex-1 border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Enter new password"
                     />
                 </div>
-                {errors?.new_password && <p className="text-red-500 space-y-2">{errors?.new_password?.message}</p>}
+
                 <div className='flex justify-start'>
                     <button
                         type="submit"
