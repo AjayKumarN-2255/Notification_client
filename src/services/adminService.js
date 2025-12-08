@@ -24,3 +24,8 @@ export const addCategory = async (payLoad) => {
     const response = await api.post('/category', payLoad);
     return response.data;
 }
+
+export const deleteCategory = async (payLoad) => {
+    const response = await api.delete(`/category?category=${payLoad}`);
+    return response.data;
+}

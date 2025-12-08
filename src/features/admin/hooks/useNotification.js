@@ -4,7 +4,7 @@ import {
     toggleStop, deleteNotification,
     addNotification
 } from "../../../services/notificationService";
-import { addCategory } from "../../../services/adminService";
+import { addCategory, deleteCategory } from "../../../services/adminService";
 import toast from "react-hot-toast";
 import { useNavigate, useLocation } from "react-router-dom";
 import { NOTIFY_BEFORE_OPTIONS } from "../../../utils/constants";
@@ -152,11 +152,26 @@ export default function useNotification(options) {
         }
     }
 
+    const handleDeleteCategory = async (catName, setCategory) => {
+        try {
+            const res = await deleteCategory(catName);
+            if (res.success) {
+                setCategory((prev) => {
+                    return prev.filter((each) => each.name != catName)
+                });
+                toast.success('category deleted successfully');
+            }
+        } catch (err) {
+            console.log(err);
+            toast.error(err.response?.data?.message || "Failed to delete category")
+        }
+    }
+
 
     return {
         data, loading, error, deleteModal,
         handleSnooze, handleStop, handleModal,
         setDeleteModal, handleDelete, handleAddNotification,
-        handleAddCategory, newCat, setNewCat,
+        handleAddCategory, newCat, setNewCat, handleDeleteCategory
     };
 }

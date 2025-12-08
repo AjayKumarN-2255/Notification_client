@@ -4,13 +4,14 @@ import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
 import { FREQUENCY_PERIODS, NOTIFY_BEFORE_OPTIONS, findMinDate } from "../../../utils/constants";
 import { titleValidation, descriptionValidation, notification_date } from "../../../utils/notificationValidation";
+import { CustomOptions } from './CustomOptions';
 
 function NotificationForm() {
 
     const { data: categories, setData: setCategories } = useFetch('/category');
     const { data: admins } = useFetch('/admin');
 
-    const { handleAddNotification, handleAddCategory, newCat, setNewCat } = useNotification({ autoFetch: false });
+    const { handleAddNotification, handleDeleteCategory, handleAddCategory, newCat, setNewCat } = useNotification({ autoFetch: false });
 
     const { control, register, handleSubmit, formState: { errors } } = useForm({
         mode: "onSubmit",
@@ -75,7 +76,10 @@ function NotificationForm() {
                                         options={categories?.map((cat) => ({ value: cat.name, label: cat.name }))}
                                         isMulti
                                         placeholder="Select categories"
+                                        components={{ Option: CustomOptions }}
                                         onChange={(selected) => field.onChange(selected)}
+                                        handleDeleteCategory={handleDeleteCategory}
+                                        setCategories={setCategories}
                                     />
                                 )}
                             />
