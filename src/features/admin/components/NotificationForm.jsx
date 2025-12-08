@@ -110,6 +110,9 @@ function NotificationForm() {
                             <Controller
                                 name="notify_user_list"
                                 control={control}
+                                rules={{
+                                    required: "Please select at least one user"
+                                }}
                                 render={({ field }) => (
                                     <Select
                                         {...field}
@@ -122,6 +125,7 @@ function NotificationForm() {
                             />
                         </div>
                     </div>
+                    {errors?.notify_user_list && <p className="text-red-500 text-end text-sm me-4 mt-2">{errors?.notify_user_list?.message}</p>}
                 </div>
 
                 <div className="flex gap-3 md:items-center w-full max-w-lg flex-col md:flex-row">
