@@ -2,7 +2,7 @@ import useFetch from '../../../hooks/useFetch';
 import useNotification from '../hooks/useNotification'
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
-import { FREQUENCY_PERIODS, NOTIFY_BEFORE_OPTIONS, findMinDate } from "../../../utils/constants";
+import { FREQUENCY_PERIODS, NOTIFY_BEFORE_OPTIONS, findMinDate, getAllowedUnits } from "../../../utils/constants";
 import { titleValidation, descriptionValidation, notification_date } from "../../../utils/notificationValidation";
 import { CustomOptions } from './CustomOptions';
 
@@ -13,13 +13,15 @@ function NotificationForm() {
 
     const { handleAddNotification, handleDeleteCategory, handleAddCategory, newCat, setNewCat } = useNotification({ autoFetch: false });
 
-    const { control, register, handleSubmit, formState: { errors } } = useForm({
+    const { control, register, watch, handleSubmit, formState: { errors } } = useForm({
         mode: "onSubmit",
         defaultValues: {
             frequency: 3
         },
     });
 
+    const topValue = watch("notify_before")?.unit || 1;
+    const allowedBottomUnits = getAllowedUnits(topValue);
 
     return (
         <div className='border-2 border-gray-100  rounded-lg w-full max-w-xl p-6 bg-white'>
@@ -30,7 +32,6 @@ function NotificationForm() {
                 <div>
                     <div className="flex gap-3 md:items-center w-full max-w-lg flex-col md:flex-row">
                         <label className="text-gray-700 font-medium max-w-28 w-full">
-                            <span className='text-red-500'>*</span>
                             Title:</label>
                         <input
                             type="text"
@@ -45,7 +46,6 @@ function NotificationForm() {
                 <div>
                     <div className="flex gap-3 md:items-center w-full max-w-lg flex-col md:flex-row">
                         <label className="text-gray-700 font-medium max-w-28 w-full">
-                            <span className='text-red-500'>*</span>
                             Description:
                         </label>
                         <textarea
@@ -60,7 +60,6 @@ function NotificationForm() {
                 <div>
                     <div className="flex gap-3 md:items-center w-full max-w-lg flex-col md:flex-row">
                         <label className="text-gray-700 font-medium max-w-28 w-full">
-                            <span className='text-red-500'>*</span>
                             Category:
                         </label>
                         <div className="w-full flex flex-col gap-2 p-3 border rounded-md">
@@ -127,7 +126,6 @@ function NotificationForm() {
 
                 <div className="flex gap-3 md:items-center w-full max-w-lg flex-col md:flex-row">
                     <label className="text-gray-700 font-medium max-w-28 w-full ">
-                        <span className='text-red-500'>*</span>
                         Frequency:
                     </label>
                     <select
@@ -146,7 +144,6 @@ function NotificationForm() {
                 <div>
                     <div className="flex gap-3 md:items-center w-full max-w-lg flex-col md:flex-row">
                         <label className="text-gray-700 font-medium max-w-28 w-full">
-                            <span className='text-red-500'>*</span>
                             Notification date:
                         </label>
                         <input
@@ -164,7 +161,6 @@ function NotificationForm() {
                 <div>
                     <div className="flex gap-3 md:items-center w-full max-w-lg flex-col md:flex-row">
                         <label className="text-gray-700 font-medium max-w-28 w-full">
-                            <span className='text-red-500'>*</span>
                             Notify before:
                         </label>
                         <Controller
@@ -205,10 +201,14 @@ function NotificationForm() {
 
                 <div>
                     <div className="flex gap-3 md:items-center w-full max-w-lg flex-col md:flex-row">
-                        <label className="text-gray-700 font-medium max-w-28 w-full">
-                            <span className='text-red-500'>*</span>
-                            Notification Frequency:
-                        </label>
+                        <div className="relative group inline-block w-full max-w-28">
+                            <label className="text-gray-700 font-medium cursor-pointer">
+                                Next Notification:
+                            </label>
+                            <div className="absolute left-1/2 text-nowrap transform -translate-x-1/2 -top-8 bg-gray-700 text-white text-sm rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10">
+                                Indicates how often to send the next notifications after the main one
+                            </div>
+                        </div>
                         <Controller
                             name="notification_frequency"
                             control={control}
@@ -234,7 +234,7 @@ function NotificationForm() {
                                         }
                                         className="border flex-1 bg-white border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                                     >
-                                        {NOTIFY_BEFORE_OPTIONS.map((period) => (
+                                        {allowedBottomUnits.map((period) => (
                                             <option key={period.value} value={period.value}>{period.label}</option>
                                         ))}
                                     </select>

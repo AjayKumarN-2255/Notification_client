@@ -13,6 +13,13 @@ export const NOTIFY_BEFORE_OPTIONS = [
     { value: 30, label: "Month" },
 ];
 
+export const getAllowedUnits = (topUnitValue) => {
+    if (topUnitValue === 1) return [NOTIFY_BEFORE_OPTIONS[0]];
+    if (topUnitValue === 7) return [NOTIFY_BEFORE_OPTIONS[0], NOTIFY_BEFORE_OPTIONS[1]];
+    if (topUnitValue === 30) return [NOTIFY_BEFORE_OPTIONS[0], NOTIFY_BEFORE_OPTIONS[1], NOTIFY_BEFORE_OPTIONS[2]];
+    return [];
+};
+
 export const findMinDate = () => {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
