@@ -8,16 +8,19 @@ export const CustomOptions = (props) => {
                 <div className="flex-1">
                     <span>{props.data.label}</span>
                 </div>
-                <button
-                    className="ml-1 px-1 text-xs leading-none text-white bg-red-500 rounded cursor-pointer"
+                <span
+                    className="text-xl text-red-500 font-extrabold cursor-pointer select-none"
                     onClick={(e) => {
-                        e.stopPropagation();
+                        e.stopPropagation();  
                         e.preventDefault();
-                        props.selectProps.handleDeleteCategory(props.data.value,props.selectProps.setCategories);
+                        props.selectProps.handleDeleteCategory(
+                            props.data.value,
+                            props.selectProps.setCategories
+                        );
                     }}
                 >
-                    delete
-                </button>
+                    ×
+                </span>
 
             </div>
         </components.Option>
