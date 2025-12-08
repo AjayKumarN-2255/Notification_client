@@ -6,10 +6,7 @@ export const Login = async (payload) => {
 };
 
 export const editAccount = async (userId, payload) => {
-  const response = await api.put(`/auth/edit-details/${userId}`, payload, {
-    requiresAuth: true,   
-    withCredentials: true     
-  });
+  const response = await api.patch(`/auth/edit-details/${userId}`, payload);
   return response.data;
 };
 

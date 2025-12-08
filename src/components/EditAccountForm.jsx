@@ -11,7 +11,7 @@ function EditAccountForm() {
     const { loading, error, handleAccount } = useManageAccount();
 
     const onSubmit = (formData) => {
-        handleAccount({ ...formData, userId: user?._id });
+        handleAccount({ ...formData, userId: user?._id }, reset);
     };
 
     useEffect(() => {
