@@ -20,6 +20,10 @@ function EditForm() {
 
     const { handleEditNotification, handleAddCategory, newCat, setNewCat } = useNotification({ autoFetch: false });
 
+    const handleFormSubmit = (payLoad) => {
+        handleEditNotification(payLoad, id);
+    }
+
     useEffect(() => {
         if (!notification) {
             return;
@@ -57,7 +61,7 @@ function EditForm() {
     return (
         <div className='border-2 border-gray-100  rounded-lg w-full max-w-xl p-6 bg-white'>
             <form className='flex flex-col gap-6'
-                onSubmit={handleSubmit(handleEditNotification)}>
+                onSubmit={handleSubmit(handleFormSubmit)}>
                 <h1 className='text-center text-xl font-semibold'>Edit Notification</h1>
 
                 <div>

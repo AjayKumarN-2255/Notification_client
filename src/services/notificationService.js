@@ -33,3 +33,9 @@ export const addNotification = async (payLoad) => {
     const response = await api.post('/notification', payLoad);
     return response.data;
 }
+
+export const editNotification = async (payLoad, nId) => {
+    const response = await api.patch(`/notification/${nId}`, payLoad);
+    return response.data;
+}
+

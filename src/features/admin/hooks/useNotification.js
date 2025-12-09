@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import {
     getAllNotification, toggleSnooze,
     toggleStop, deleteNotification,
-    addNotification
+    addNotification,
+    editNotification
 } from "../../../services/notificationService";
 import { addCategory, deleteCategory } from "../../../services/adminService";
 import toast from "react-hot-toast";
@@ -139,7 +140,7 @@ export default function useNotification(options) {
         }
     }
 
-    const handleEditNotification = async (payLoad) => {
+    const handleEditNotification = async (payLoad, nId) => {
         payLoad.category_names = payLoad.category_names?.map(cat => cat.value);
         payLoad.notify_user_list = (payLoad.notify_user_list?.map(cat => cat.value));
         const selectedOption = NOTIFY_BEFORE_OPTIONS.find(opt => opt.value === payLoad.notify_before.unit);
@@ -149,7 +150,16 @@ export default function useNotification(options) {
         payLoad.notify_before = payLoad.notify_before.number;
         payLoad.notification_frequency = payLoad.notification_frequency.number;
         payLoad.notify_channels = payLoad.notify_channels?.map((chnl) => chnl.value);
-        console.log(payLoad);
+
+        try {
+            const res = await editNotification(payLoad, nId);
+            if (res.success) {
+                setShouldNavigate(true);
+            }
+        } catch (err) {
+            console.log(err)
+            toast.error(err.response?.data?.message || "Failed to edit notifications")
+        }
     }
 
 
