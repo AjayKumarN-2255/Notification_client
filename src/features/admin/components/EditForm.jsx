@@ -5,7 +5,7 @@ import useNotification from '../hooks/useNotification'
 import { useForm, Controller } from 'react-hook-form';
 import Select from "react-select";
 import { titleValidation, descriptionValidation, notification_date } from "../../../utils/notificationValidation";
-import { FREQUENCY_PERIODS, NOTIFY_BEFORE_OPTIONS, NOTIFICATION_CHANNELS, findMinDate, getNotifyBeforeValue, getAllowedUnits } from "../../../utils/constants";
+import { FREQUENCY_PERIODS, NOTIFY_BEFORE_OPTIONS, NOTIFICATION_CHANNELS, getNotifyBeforeValue, getAllowedUnits } from "../../../utils/constants";
 
 function EditForm() {
 
@@ -212,7 +212,6 @@ function EditForm() {
                             type="date"
                             name="notification_date"
                             {...register("notification_date", notification_date)}
-                            min={findMinDate()}
                             className="border flex-1 border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Enter title"
                         />
