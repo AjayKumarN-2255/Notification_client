@@ -7,6 +7,7 @@ import LoginPage from './features/auth/pages/LoginPage';
 import AdminLayout from "./layouts/AdminLayout";
 import AdminDashboard from "./features/admin/pages/AdminDashboard";
 import AddNotificationPage from "./features/admin/pages/AddNotificationPage";
+import EditNotificationPage from "./features/admin/pages/EditNotificationPage"
 
 
 import SuperAdminLayout from "./layouts/SuperAdminLayout";
@@ -34,6 +35,7 @@ function App() {
           children: [
             { path: 'dashboard', element: <AdminDashboard /> },
             { path: 'add-notification', element: <AddNotificationPage /> },
+            { path: 'edit-notification/:id', element: <EditNotificationPage /> },
             { path: 'edit-account', element: <EditAdminAccount /> }
           ]
         }

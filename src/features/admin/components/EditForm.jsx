@@ -1,24 +1,55 @@
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import useFetch from '../../../hooks/useFetch';
 import useNotification from '../hooks/useNotification'
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller } from 'react-hook-form';
 import Select from "react-select";
-import { FREQUENCY_PERIODS, NOTIFY_BEFORE_OPTIONS, NOTIFICATION_CHANNELS, findMinDate, getAllowedUnits } from "../../../utils/constants";
 import { titleValidation, descriptionValidation, notification_date } from "../../../utils/notificationValidation";
-import { CustomOptions } from './CustomOptions';
+import { FREQUENCY_PERIODS, NOTIFY_BEFORE_OPTIONS, NOTIFICATION_CHANNELS, findMinDate, getNotifyBeforeValue, getAllowedUnits } from "../../../utils/constants";
 
-function NotificationForm() {
+function EditForm() {
 
+    const { id } = useParams();
+    const { data: notification } = useFetch(`/notification/single/${id}`);
     const { data: categories, setData: setCategories } = useFetch('/category');
     const { data: admins } = useFetch('/admin');
 
-    const { handleAddNotification, handleDeleteCategory, handleAddCategory, newCat, setNewCat } = useNotification({ autoFetch: false });
-
-    const { control, register, watch, handleSubmit, formState: { errors } } = useForm({
-        mode: "onSubmit",
-        defaultValues: {
-            frequency: 3
-        },
+    const { control, register, watch, handleSubmit, reset, formState: { errors } } = useForm({
+        mode: "onSubmit"
     });
+
+    const { handleEditNotification, handleAddCategory, newCat, setNewCat } = useNotification({ autoFetch: false });
+
+    useEffect(() => {
+        if (!notification) {
+            return;
+        }
+        const formattedDate = notification?.next_notification_date
+            ? new Date(notification.next_notification_date).toISOString().split('T')[0]
+            : '';
+        const notify_before_obj = { number: notification?.notify_before, unit: getNotifyBeforeValue(notification?.notify_before_unit) };
+        const notification_frequency_obj = { number: notification?.notification_frequency, unit: getNotifyBeforeValue(notification?.notific_gap_unit) };
+
+        reset({
+            title: notification?.title || "",
+            description: notification?.description || "",
+            category_names: notification?.category_names?.map(each => {
+                return { label: each, value: each };
+            }),
+            notify_user_list: notification?.notify_user_list?.map((user) => {
+                return { value: user?._id, label: user?.username }
+            }),
+            frequency: notification?.frequency,
+            notification_date: formattedDate,
+            notify_before: notify_before_obj,
+            notification_frequency: notification_frequency_obj,
+            notify_channels: notification?.notify_channels?.map((chnl) => {
+                return { value: chnl, label: chnl }
+            }),
+        })
+
+    }, [notification]);
+
 
     const topValue = watch("notify_before")?.unit || 1;
     const allowedBottomUnits = getAllowedUnits(topValue);
@@ -26,8 +57,8 @@ function NotificationForm() {
     return (
         <div className='border-2 border-gray-100  rounded-lg w-full max-w-xl p-6 bg-white'>
             <form className='flex flex-col gap-6'
-                onSubmit={handleSubmit(handleAddNotification)}>
-                <h1 className='text-center text-xl font-semibold'>Add Notification</h1>
+                onSubmit={handleSubmit(handleEditNotification)}>
+                <h1 className='text-center text-xl font-semibold'>Edit Notification</h1>
 
                 <div>
                     <div className="flex gap-3 md:items-center w-full max-w-lg flex-col md:flex-row">
@@ -75,10 +106,7 @@ function NotificationForm() {
                                         options={categories?.map((cat) => ({ value: cat.name, label: cat.name }))}
                                         isMulti
                                         placeholder="Select categories"
-                                        components={{ Option: CustomOptions }}
                                         onChange={(selected) => field.onChange(selected)}
-                                        handleDeleteCategory={handleDeleteCategory}
-                                        setCategories={setCategories}
                                     />
                                 )}
                             />
@@ -152,6 +180,7 @@ function NotificationForm() {
                     </div>
                     {errors?.notify_channels && <p className="text-red-500 text-end text-sm me-4 mt-2">{errors?.notify_channels?.message}</p>}
                 </div>
+
 
                 <div className="flex gap-3 md:items-center w-full max-w-lg flex-col md:flex-row">
                     <label className="text-gray-700 font-medium max-w-28 w-full ">
@@ -280,7 +309,7 @@ function NotificationForm() {
                         className="bg-blue-600 max-w-lg w-full text-white font-medium px-4 py-2 rounded-md hover:bg-blue-700
                       focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition-colors"
                     >
-                        Add notification
+                        Submit
                     </button>
                 </div>
 
@@ -289,4 +318,4 @@ function NotificationForm() {
     )
 }
 
-export default NotificationForm
+export default EditForm

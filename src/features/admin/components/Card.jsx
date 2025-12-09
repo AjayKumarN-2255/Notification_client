@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 
 function Card({ item, handleModal, handleStop, handleSnooze }) {
 
@@ -7,17 +8,10 @@ function Card({ item, handleModal, handleStop, handleSnooze }) {
         return text.length > maxLength ? text.slice(0, maxLength) + '…' : text;
     };
 
-    // const handleCategory = (name) => {
-    //     setSelectedCat((prev) => {
-    //         const data = { value: name, label: name }
-    //         return [...prev, data]
-    //     })
-    // }
-
     return (
         <div
             key={item._id}
-            className="bg-white shadow-lg rounded-xl p-5 border border-gray-200 hover:shadow-xl transition flex flex-col h-72"
+            className="bg-white shadow-lg rounded-xl p-5 border border-gray-200 hover:shadow-xl transition flex flex-col md:h-72"
         >
             {/* Header */}
             <div className="flex justify-between items-center mb-2">
@@ -33,8 +27,8 @@ function Card({ item, handleModal, handleStop, handleSnooze }) {
             </div>
 
             {/* Description */}
-            <p className="text-gray-600 text-sm mb-2 flex-1">
-                {truncateText(item.description, 220)} {/* 120 chars max */}
+            <p className="text-gray-600 text-sm mb-2 flex-1 break-words">
+                {truncateText(item.description, 150)} {/* 120 chars max */}
             </p>
 
             {/* Categories and next notification */}
@@ -66,7 +60,7 @@ function Card({ item, handleModal, handleStop, handleSnooze }) {
             </div>
 
             {/* Actions */}
-            <div className="flex gap-4 mt-2">
+            <div className="flex flex-wrap gap-2 mt-2">
                 <button
                     className={`flex-1 py-2 text-sm text-white rounded-lg ${item?.is_snoozed
                         ? 'bg-gray-600 hover:bg-gray-700'
@@ -93,6 +87,13 @@ function Card({ item, handleModal, handleStop, handleSnooze }) {
                 >
                     Delete
                 </button>
+
+                <Link
+                    to={`/admin/edit-notification/${item._id}`}
+                    className="flex-1 flex justify-center items-center py-2 text-sm bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg"
+                >
+                    Edit
+                </Link>
             </div>
         </div>
 

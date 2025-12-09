@@ -1,4 +1,5 @@
 
+export const NOTIFICATION_CHANNELS = ["whatsapp", "email"];
 
 export const FREQUENCY_PERIODS = [
     { value: 1, label: "Monthly" },        // 1 month
@@ -12,6 +13,11 @@ export const NOTIFY_BEFORE_OPTIONS = [
     { value: 7, label: "Week" },
     { value: 30, label: "Month" },
 ];
+
+export function getNotifyBeforeValue(label) {
+    const option = NOTIFY_BEFORE_OPTIONS.find(opt => opt.label === label);
+    return option ? option.value : "";
+}
 
 export const getAllowedUnits = (topUnitValue) => {
     if (topUnitValue === 1) return [NOTIFY_BEFORE_OPTIONS[0]];

@@ -126,6 +126,7 @@ export default function useNotification(options) {
         payLoad.notific_gap_unit = selectedNotificGap?.label;
         payLoad.notify_before = payLoad.notify_before.number;
         payLoad.notification_frequency = payLoad.notification_frequency.number;
+        payLoad.notify_channels = payLoad.notify_channels?.map((chnl) => chnl.value);
 
         try {
             const res = await addNotification(payLoad);
@@ -137,6 +138,20 @@ export default function useNotification(options) {
             toast.error(err.response?.data?.message || "Failed to add notifications")
         }
     }
+
+    const handleEditNotification = async (payLoad) => {
+        payLoad.category_names = payLoad.category_names?.map(cat => cat.value);
+        payLoad.notify_user_list = (payLoad.notify_user_list?.map(cat => cat.value));
+        const selectedOption = NOTIFY_BEFORE_OPTIONS.find(opt => opt.value === payLoad.notify_before.unit);
+        payLoad.notify_before_unit = selectedOption?.label;
+        const selectedNotificGap = NOTIFY_BEFORE_OPTIONS.find(opt => opt.value === payLoad.notification_frequency.unit);
+        payLoad.notific_gap_unit = selectedNotificGap?.label;
+        payLoad.notify_before = payLoad.notify_before.number;
+        payLoad.notification_frequency = payLoad.notification_frequency.number;
+        payLoad.notify_channels = payLoad.notify_channels?.map((chnl) => chnl.value);
+        console.log(payLoad);
+    }
+
 
     const handleAddCategory = async (catName, setCategory) => {
         try {
@@ -170,7 +185,7 @@ export default function useNotification(options) {
 
     return {
         data, loading, error, deleteModal,
-        handleSnooze, handleStop, handleModal,
+        handleSnooze, handleStop, handleModal, handleEditNotification,
         setDeleteModal, handleDelete, handleAddNotification,
         handleAddCategory, newCat, setNewCat, handleDeleteCategory
     };
