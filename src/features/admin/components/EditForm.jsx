@@ -52,7 +52,7 @@ function EditForm() {
             }),
         })
 
-    }, [notification]);
+    }, [notification, reset]);
 
 
     const topValue = watch("notify_before")?.unit || 1;
