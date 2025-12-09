@@ -24,6 +24,11 @@ function EditForm() {
         handleEditNotification(payLoad, id);
     }
 
+
+    const topValue = watch("notify_before")?.unit?.value || 1;
+    const allowedBottomUnits = getAllowedUnits(topValue);
+
+
     useEffect(() => {
         if (!notification) {
             return;
@@ -31,8 +36,11 @@ function EditForm() {
         const formattedDate = notification?.next_notification_date
             ? new Date(notification.next_notification_date).toISOString().split('T')[0]
             : '';
-        const notify_before_obj = { number: notification?.notify_before, unit: getNotifyBeforeValue(notification?.notify_before_unit) };
-        const notification_frequency_obj = { number: notification?.notification_frequency, unit: getNotifyBeforeValue(notification?.notific_gap_unit) };
+        const nfbUnit = getNotifyBeforeValue(notification?.notify_before_unit)
+        const notify_before_obj = { number: notification?.notify_before, unit: NOTIFY_BEFORE_OPTIONS.find((each) => each.value == nfbUnit) };
+
+        const nfUnit = getNotifyBeforeValue(notification?.notific_gap_unit);
+        const notification_frequency_obj = { number: notification?.notification_frequency, unit: NOTIFY_BEFORE_OPTIONS.find((each) => each.value == nfUnit) };
 
         reset({
             title: notification?.title || "",
@@ -43,7 +51,7 @@ function EditForm() {
             notify_user_list: notification?.notify_user_list?.map((user) => {
                 return { value: user?._id, label: user?.username }
             }),
-            frequency: notification?.frequency,
+            frequency: FREQUENCY_PERIODS.find((each) => each.value == notification?.frequency),
             notification_date: formattedDate,
             notify_before: notify_before_obj,
             notification_frequency: notification_frequency_obj,
@@ -53,10 +61,6 @@ function EditForm() {
         })
 
     }, [notification, reset]);
-
-
-    const topValue = watch("notify_before")?.unit || 1;
-    const allowedBottomUnits = getAllowedUnits(topValue);
 
     return (
         <div className='border-2 border-gray-100  rounded-lg w-full max-w-xl p-6 bg-white'>
@@ -187,20 +191,23 @@ function EditForm() {
 
 
                 <div className="flex gap-3 md:items-center w-full max-w-lg flex-col md:flex-row">
-                    <label className="text-gray-700 font-medium max-w-28 w-full ">
+                    <label className="text-gray-700 font-medium max-w-28 w-full">
                         Frequency:
                     </label>
-                    <select
-                        className="border flex-1 bg-white border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1
-                        focus:ring-blue-500 focus:border-blue-500"
-                        name="frequency"
-                        {...register("frequency")}
 
-                    >
-                        {FREQUENCY_PERIODS.map((period) => (
-                            <option key={period.value} value={period.value}>{period.label}</option>
-                        ))}
-                    </select>
+                    <Controller
+                        name="frequency"
+                        control={control}
+                        render={({ field }) => (
+                            <Select
+                                {...field}
+                                options={FREQUENCY_PERIODS}
+                                className="flex-1"
+                                classNamePrefix="react-select"
+                                placeholder="Select frequency"
+                            />
+                        )}
+                    />
                 </div>
 
                 <div>
@@ -227,7 +234,7 @@ function EditForm() {
                         <Controller
                             name="notify_before"
                             control={control}
-                            defaultValue={{ number: "", unit: 1 }} // keep number as string
+                            defaultValue={{ number: "", unit: "" }}
                             rules={{
                                 validate: value => Number(value.number) > 0 || "Number must be > 0"
                             }}
@@ -242,17 +249,14 @@ function EditForm() {
                                         className="border w-40 border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                                         placeholder="Enter number"
                                     />
-                                    <select
+                                    <Select
+                                        options={NOTIFY_BEFORE_OPTIONS}
                                         value={field.value.unit}
-                                        onChange={(e) =>
-                                            field.onChange({ ...field.value, unit: Number(e.target.value) })
-                                        }
-                                        className="border flex-1 bg-white border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                                    >
-                                        {NOTIFY_BEFORE_OPTIONS.map((period) => (
-                                            <option key={period.value} value={period.value}>{period.label}</option>
-                                        ))}
-                                    </select>
+                                        onChange={(selected) => field.onChange({ ...field.value, unit: selected })}
+                                        className="flex-1"
+                                        classNamePrefix="react-select"
+                                        placeholder="Select unit"
+                                    />
                                 </div>
                             )}
                         />
@@ -273,7 +277,7 @@ function EditForm() {
                         <Controller
                             name="notification_frequency"
                             control={control}
-                            defaultValue={{ number: "", unit: 1 }} // keep number as string
+                            defaultValue={{ number: "", unit: "" }}
                             rules={{
                                 validate: value => Number(value.number) > 0 || "Number must be > 0"
                             }}
@@ -288,17 +292,15 @@ function EditForm() {
                                         className="border w-40 border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                                         placeholder="Enter number"
                                     />
-                                    <select
+                                    <Select
+                                        options={allowedBottomUnits}
                                         value={field.value.unit}
-                                        onChange={(e) =>
-                                            field.onChange({ ...field.value, unit: Number(e.target.value) })
-                                        }
-                                        className="border flex-1 bg-white border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                                    >
-                                        {allowedBottomUnits.map((period) => (
-                                            <option key={period.value} value={period.value}>{period.label}</option>
-                                        ))}
-                                    </select>
+                                        onChange={(selected) => field.onChange({ ...field.value, unit: selected })}
+                                        className="flex-1"
+                                        classNamePrefix="react-select"
+                                        placeholder="Select unit"
+                                        menuPlacement="top"
+                                    />
                                 </div>
                             )}
                         />
